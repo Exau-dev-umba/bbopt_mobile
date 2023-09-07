@@ -15,7 +15,7 @@ class _SplashscreenState extends State<Splashscreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Future.delayed(Duration(seconds: 2), (){
-        Navigator.popAndPushNamed(context, Routes.homeRoute);
+        Navigator.popAndPushNamed(context, Routes.loginpage);
       });
     });
   }

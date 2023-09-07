@@ -1,3 +1,4 @@
+import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -55,6 +56,8 @@ class _LoginPageState extends State<LoginPage> {
           content: Text('Login successful'),
         ),
       );
+      //Naigate to home page
+      Navigator.popAndPushNamed(context, Routes.homeRoute);
     }
   }
 

@@ -10,7 +10,7 @@ class MonApplication extends StatelessWidget{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RoutesManager.route,
-      initialRoute: Routes.loginpage,
+      initialRoute: Routes.splashscreen,
     );
   }
 }
