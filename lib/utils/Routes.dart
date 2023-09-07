@@ -7,4 +7,5 @@ class Routes {
   static const String communauteRoute = "discuter";
   static const String avisRoute = "discuter";
   static const String statRoute = "discuter";
+  static const String loginpage = "login";
 }
