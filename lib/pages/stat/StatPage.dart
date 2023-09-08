@@ -51,6 +51,47 @@ class _StatPageState extends State<StatPage> {
   }
 
   Widget _body(){
-    return Stack();
+    return Stack(
+      children: [
+        Container(
+          width: double.infinity,
+            child: Image.asset('assets/images/rice9.jpg', fit: BoxFit.fill,)
+        ),
+        _carte("INFORMATION DE VOTRE PLANTATION", 'assets/images/31172.jpg', Constantes.ColorvertFonce, Constantes.Colorwhite),
+      ],
+    );
+  }
+
+  _carte(String title, String image, Color background, Color colortext){
+    return Container(
+      margin: EdgeInsets.all(15),
+      color: background,
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Text(title, style: TextStyle(color: colortext, fontSize: 15),),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                border: Border.all(
+                  width: 3,
+                  color: Constantes.Colorwhite,
+                  style: BorderStyle.solid,
+                )
+              ),
+              child: CircleAvatar(
+                backgroundImage: AssetImage(image),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
