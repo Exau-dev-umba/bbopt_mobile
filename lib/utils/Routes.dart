@@ -8,4 +8,5 @@ class Routes {
   static const String avisRoute = "discuter";
   static const String statRoute = "discuter";
   static const String loginpage = "login";
+  static const String registrationpage = "registration";
 }

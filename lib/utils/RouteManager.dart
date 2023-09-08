@@ -1,3 +1,4 @@
+import 'package:bbopt_mobile/pages/auth/RegistrationPage.dart';
 import 'package:bbopt_mobile/pages/home/HomePage.dart';
 import 'package:bbopt_mobile/pages/auth/LoginPage.dart';
 import 'package:bbopt_mobile/pages/welcome/Splashscreen.dart';
@@ -13,6 +14,8 @@ class RoutesManager {
         return MaterialPageRoute(builder: (_)=> HomePage());
       case Routes.loginpage:
         return MaterialPageRoute(builder: (_) => LoginPage());
+      case Routes.registrationpage:
+        return MaterialPageRoute(builder: (_) => RegistrationPage());
     }
   }
 }

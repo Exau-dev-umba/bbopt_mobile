@@ -203,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Form(
                 key: formKey,
                 child: Container(
-                  color: Colors.black54,
+                  color: Colors.black54.withOpacity(0.6),
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -261,20 +261,15 @@ class _LoginPageState extends State<LoginPage> {
                       // The login button widget
                       ElevatedButton(
                         onPressed: login,
-                        child: Row(
-                          children: [
-                            Text('Se connecter'),
-                            Icon(Icons.arrow_forward_ios_rounded,)
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        ),
+                        child: Text('Se connecter'),
+
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green.shade400 ),
+                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green.shade700 ),
                         ),
                       ),
                       SizedBox(height: 30.0,),
-                      TextButton(onPressed: login, child:
-                        Text(
+                      TextButton(onPressed: (() => Navigator.popAndPushNamed(context, Routes.registrationpage)),
+                          child: Text(
                           'Vous n\'avez pas de compte ?',
                           style: TextStyle(
                             color: Colors.white70,
