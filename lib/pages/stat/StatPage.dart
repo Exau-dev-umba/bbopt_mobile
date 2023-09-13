@@ -54,44 +54,102 @@ class _StatPageState extends State<StatPage> {
     return Stack(
       children: [
         Container(
-          width: double.infinity,
-            child: Image.asset('assets/images/rice9.jpg', fit: BoxFit.fill,)
+          foregroundDecoration: BoxDecoration(
+            color: Colors.green.shade900.withOpacity(0.3),
+          ),
+          child: Image.asset(
+            'assets/images/5104192.jpg', // The path to your background image
+            fit: BoxFit.cover,
+            height: double.infinity,
+            width: double.infinity,
+          ),
         ),
-        _carte("INFORMATION DE VOTRE PLANTATION", 'assets/images/31172.jpg', Constantes.ColorvertFonce, Constantes.Colorwhite),
+        SingleChildScrollView(
+          child: Column(
+              children: [
+                _carte("INFORMATION DE VOTRE PLANTATION", 'assets/images/cornfield.jpg', Constantes.ColorvertFonce, Constantes.Colorwhite, onTap:(){}),
+                _carte("INFORMATION SUR LA RECOLTE", 'assets/images/rice9.jpg', Constantes.ColorvertFonce, Constantes.Colorwhite, onTap:(){}),
+                _carte("DONNEES METEO", 'assets/images/cloudy_1163657.png', Constantes.Colormauve, Constantes.Colorwhite, onTap:(){}),
+                _carteGrand("CONSULTEZ NOS ABONNEMENTS", 'assets/images/30894.jpg', Constantes.ColorvertFonce, Constantes.Colorjaune, onTap:(){}),
+                _carteGrand("CONSEIL D'UN AGRONOME", 'assets/images/30894.jpg', Constantes.ColorvertFonce, Constantes.Colorjaune, onTap:(){}),
+              ]
+          ),
+        ),
       ],
     );
   }
 
-  _carte(String title, String image, Color background, Color colortext){
-    return Container(
-      margin: EdgeInsets.all(15),
-      color: background,
-      child: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Text(title, style: TextStyle(color: colortext, fontSize: 15),),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(
-                  width: 3,
-                  color: Constantes.Colorwhite,
-                  style: BorderStyle.solid,
-                )
+  _carte(String title, String image, Color background, Color colortext, {Function? onTap}){
+    return InkWell(
+      child: Container(
+        margin: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: Constantes.ColorvertFonce,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left:5),
+                child: Text(title, style: TextStyle(color: colortext, fontSize: 15),),
               ),
-              child: CircleAvatar(
-                backgroundImage: AssetImage(image),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(
+                    width: 3,
+                    color: Constantes.Colorwhite,
+                    style: BorderStyle.solid,
+                  )
+                ),
+                  width: 60,
+                  height: 60,
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(image),
+                    backgroundColor: Constantes.ColorvertDark
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+        onTap: onTap!()
     );
   }
+
+  _carteGrand(String title, String image, Color background, Color colortext, {Function? onTap}){
+    return InkWell(
+        child: Container(
+            width:500,
+          height:200,
+          margin: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+              image: DecorationImage(
+                  image: AssetImage(image)
+              )
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Constantes.ColorvertFonce,
+                  ),
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  height: 60,
+                  child: Text(title, style: TextStyle(color: colortext, fontSize: 22, fontWeight:FontWeight.w300),)
+              ),
+            ],
+          ),
+        ),
+        onTap: onTap!()
+    );
+  }
+
 }
