@@ -1,5 +1,6 @@
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/material.dart';
+import 'package:bbopt_mobile/utils/Constantes.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -84,10 +85,10 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
         ),
       ),
       style: TextStyle(
-        color: Colors.white,
+        color: Constantes.Colorwhite,
         fontSize: 20,
       ),
-      cursorColor: Colors.white,
+      cursorColor: Constantes.Colorwhite,
     );
 
   }
@@ -139,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Login successful'),
-          backgroundColor: Colors.green.shade400,
+          backgroundColor: Constantes.ColorvertClair,
         ),
       );
       //Naigate to home page
@@ -224,8 +225,8 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.white70,
                             fontSize: 20
                           ),
-                          fillColor: Colors.white,
-                          focusColor: Colors.white,
+                          fillColor: Constantes.Colorwhite,
+                          focusColor: Constantes.Colorwhite,
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.white70
@@ -239,16 +240,16 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.all(4.0),
                               child: Icon(
                                   Icons.mail,
-                                  color: Colors.white
+                                  color: Constantes.Colorwhite
                               ),
                             )
                         ),
                         validator: validateEmail,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Constantes.Colorwhite,
                           fontSize: 20,
                         ),
-                        cursorColor: Colors.white,
+                        cursorColor: Constantes.Colorwhite,
                       ),
                       SizedBox(height: 15.0),
                       // The password text field widget
@@ -264,7 +265,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text('Se connecter'),
 
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green.shade700 ),
+                          backgroundColor: MaterialStateColor.resolveWith((states) => Constantes.ColorvertCitron ),
                         ),
                       ),
                       SizedBox(height: 30.0,),

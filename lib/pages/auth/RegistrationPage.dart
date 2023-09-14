@@ -1,5 +1,6 @@
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/material.dart';
+import 'package:bbopt_mobile/utils/Constantes.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -71,7 +72,7 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
         ),
         helperText: widget.helperText,
         helperStyle : TextStyle(
-          color : Colors.white
+          color : Constantes.Colorwhite
         ),
         suffixIcon: IconButton(
           onPressed: () {
@@ -82,15 +83,15 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
           hoverColor: Colors.transparent,
           icon: Icon(
             _obscureText.value ? Icons.visibility : Icons.visibility_off,
-            color: Colors.white,
+            color: Constantes.Colorwhite,
           ),
         ),
       ),
       style: TextStyle(
-        color: Colors.white,
+        color: Constantes.Colorwhite,
         fontSize: 20,
       ),
-      cursorColor: Colors.white,
+      cursorColor: Constantes.Colorwhite,
     );
 
   }
@@ -228,7 +229,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           // The email text field widget
                           Text('Créer un compte',
                             style: TextStyle(
-                                color: Colors.white,
+                                color: Constantes.Colorwhite,
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold
                             ),),
@@ -256,16 +257,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: Icon(
                                       Icons.person,
-                                      color: Colors.white
+                                      color: Constantes.Colorwhite
                                   ),
                                 )
                             ),
                             validator: validateName,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Constantes.Colorwhite,
                               fontSize: 20,
                             ),
-                            cursorColor: Colors.white,
+                            cursorColor: Constantes.Colorwhite,
                           ),
                           SizedBox(height: 15.0),
                           TextFormField(
@@ -276,8 +277,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                     color: Colors.white70,
                                     fontSize: 20
                                 ),
-                                fillColor: Colors.white,
-                                focusColor: Colors.white,
+                                fillColor: Constantes.Colorwhite,
+                                focusColor: Constantes.Colorwhite,
                                 border: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.white70
@@ -291,16 +292,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: Icon(
                                       Icons.mail,
-                                      color: Colors.white
+                                      color: Constantes.Colorwhite
                                   ),
                                 )
                             ),
                             validator: validateEmail,
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Constantes.Colorwhite,
                               fontSize: 20,
                             ),
-                            cursorColor: Colors.white,
+                            cursorColor: Constantes.Colorwhite,
                           ),
                           SizedBox(height: 15.0),
                           // The password text field widget
@@ -324,7 +325,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             onPressed: login,
                             child: Text('Créer un compte'),
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green.shade700 ),
+                              backgroundColor: MaterialStateColor.resolveWith((states) => Constantes.ColorvertCitron ),
                             ),
                           ),
                           SizedBox(height: 30.0,),
