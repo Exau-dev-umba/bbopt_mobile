@@ -1,19 +1,18 @@
+
+import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
+import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 
-class StatPage extends StatefulWidget {
+class StatPage extends StatelessWidget {
   const StatPage({Key? key}) : super(key: key);
 
   @override
-  State<StatPage> createState() => _StatPageState();
-}
-
-class _StatPageState extends State<StatPage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: ProfilPage(),
       appBar: AppBar(
         title: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,10 +24,6 @@ class _StatPageState extends State<StatPage> {
               width: MediaQuery.of(context).size.width * 0.4,
             )
           ],
-        ),
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/nav/menu.png'),
         ),
         leadingWidth: 50,
         actions: [
@@ -69,7 +64,15 @@ class _StatPageState extends State<StatPage> {
               children: [
                 _carte("INFORMATION DE VOTRE PLANTATION", 'assets/images/cornfield.jpg', Constantes.ColorvertFonce, Constantes.Colorwhite, onTap:(){}),
                 _carte("INFORMATION SUR LA RECOLTE", 'assets/images/rice9.jpg', Constantes.ColorvertFonce, Constantes.Colorwhite, onTap:(){}),
-                _carte("DONNEES METEO", 'assets/images/cloudy_1163657.png', Constantes.Colormauve, Constantes.Colorwhite, onTap:(){}),
+                _carte(
+                    "DONNEES METEO",
+                    'assets/images/cloudy_1163657.png',
+                    Constantes.Colormauve,
+                    Constantes.Colorwhite,
+                    onTap:(){
+                      // Navigator.pushNamed(context, Routes.donneeMeteo);
+                    }
+                ),
                 _carteGrand("CONSULTEZ NOS ABONNEMENTS", 'assets/images/30894.jpg', Constantes.ColorvertFonce, Constantes.Colorjaune, onTap:(){}),
                 _carteGrand("CONSEIL D'UN AGRONOME", 'assets/images/30894.jpg', Constantes.ColorvertFonce, Constantes.Colorjaune, onTap:(){}),
               ]
@@ -151,5 +154,4 @@ class _StatPageState extends State<StatPage> {
         onTap: onTap!()
     );
   }
-
 }

@@ -40,6 +40,11 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   get_storage: ^2.1.1
   badges: ^3.1.2
+  sizer: ^2.0.15
+  responsive_sizer: ^3.2.0
+  graphic:
+  intl: ^0.17.0
+  quiver: ^3.0.1+1
 
 dev_dependencies:
   flutter_test:

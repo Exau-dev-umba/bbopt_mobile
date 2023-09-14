@@ -1,5 +1,7 @@
+import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class CommunautePage extends StatefulWidget {
   const CommunautePage({Key? key}) : super(key: key);
@@ -12,6 +14,7 @@ class _CommunautePageState extends State<CommunautePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: ProfilPage(),
       appBar: AppBar(
         title: Text('LA COMMUNAUTE', style: TextStyle(color: Constantes.Colorjaune),),
         centerTitle: true,
@@ -29,6 +32,9 @@ class _CommunautePageState extends State<CommunautePage> {
               children:[
                 _post("CONSEIL D'UN AGRONOME", 'assets/images/VISUEL-BBOPT-DECL3.jpg', Constantes.ColorvertFonce,746,385, Constantes.Colorjaune, onTap:(){}),
                 _post("CONSEIL D'UN AGRONOME", 'assets/images/VISUEL-BBOPT-DECL2.jpg', Constantes.ColorvertFonce,609,250, Constantes.Colorjaune, onTap:(){}),
+                _post("CONSEIL D'UN AGRONOME", 'assets/images/VISUEL-BBOPT-DECL2.jpg', Constantes.ColorvertFonce,609,250, Constantes.Colorjaune, onTap:(){}),
+                _post("CONSEIL D'UN AGRONOME", 'assets/images/VISUEL-BBOPT-DECL3.jpg', Constantes.ColorvertFonce,746,385, Constantes.Colorjaune, onTap:(){}),
+
               ]
           ),
         )
@@ -52,7 +58,7 @@ class _CommunautePageState extends State<CommunautePage> {
                 top: 30,
                 left: 20,
                 child: Image.asset(
-                  "assets/images/facebook-logo_2504792.png",
+                  "assets/images/user.png",
                   width: 25,
                   height: 25,
                 ),
@@ -90,7 +96,7 @@ class _CommunautePageState extends State<CommunautePage> {
                       children:[
                         Text("SAVE", style:TextStyle(color:Constantes.Colorjaune)),
                         SizedBox(width:10),
-                        Icon(Icons.save, color: Constantes.Colorjaune,),
+                        Icon(Icons.bookmark, color: Constantes.Colorjaune,),
                       ]
                     )
                   ]

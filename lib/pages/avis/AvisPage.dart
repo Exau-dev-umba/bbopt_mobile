@@ -1,3 +1,4 @@
+import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +13,9 @@ class _AvisPageState extends State<AvisPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: ProfilPage(),
       appBar: AppBar(
         title: Text('LES AVIS', style: TextStyle(color: Constantes.Colorjaune),),
-        leading: Icon(Icons.arrow_back, color: Constantes.Colorjaune,),
         centerTitle: true,
         backgroundColor: Constantes.ColorvertFonce,
       ),
