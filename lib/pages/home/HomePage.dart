@@ -6,6 +6,7 @@ import 'package:bbopt_mobile/pages/discuter/DiscuterPage.dart';
 import 'package:bbopt_mobile/pages/stat/StatPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -43,31 +44,31 @@ class _HomePageState extends State<HomePage> {
       type: BottomNavigationBarType.fixed,
       unselectedItemColor: Constantes.Colorwhite,
       selectedItemColor: Constantes.Colorjaune,
-      unselectedLabelStyle: TextStyle(fontSize: 9),
-      selectedLabelStyle: TextStyle(fontSize: 11),
+      unselectedLabelStyle: TextStyle(fontSize: 12.sp),
+      selectedLabelStyle: TextStyle(fontSize: 13.sp),
       items: [
         BottomNavigationBarItem(
-          icon: Image.asset('assets/nav/chatbot.png', width:_currentIndex==0? 28:25, color:_currentIndex==0?Constantes.Colorjaune:Constantes.Colorwhite),
+          icon: Image.asset('assets/nav/chatbot.png', width:_currentIndex==0? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==0?Constantes.Colorjaune:Constantes.Colorwhite),
           label: 'DISCUTER',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset('assets/nav/calendar.png', width: _currentIndex==1? 28:25, color:_currentIndex==1?Constantes.Colorjaune:Constantes.Colorwhite),
+          icon: Image.asset('assets/nav/calendar.png', width: _currentIndex==1? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==1?Constantes.Colorjaune:Constantes.Colorwhite),
           label: 'CALENDRIER',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset('assets/nav/photo-camera.png', width: _currentIndex==2? 28:25, color:_currentIndex==2?Constantes.Colorjaune:Constantes.Colorwhite),
+          icon: Image.asset('assets/nav/photo-camera.png', width: _currentIndex==2? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==2?Constantes.Colorjaune:Constantes.Colorwhite),
           label:'DIAGNOSTIQUER'
         ),
         BottomNavigationBarItem(
-            icon: Image.asset('assets/nav/trend.png', width: _currentIndex==3? 28:25, color:_currentIndex==3?Constantes.Colorjaune:Constantes.Colorwhite),
+            icon: Image.asset('assets/nav/trend.png', width: _currentIndex==3? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==3?Constantes.Colorjaune:Constantes.Colorwhite),
             label:'STATISTIQUE'
         ),
         BottomNavigationBarItem(
-            icon: Image.asset('assets/nav/message.png', width: _currentIndex==4? 28:25, color:_currentIndex==4?Constantes.Colorjaune:Constantes.Colorwhite),
+            icon: Image.asset('assets/nav/message.png', width: _currentIndex==4? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==4?Constantes.Colorjaune:Constantes.Colorwhite),
             label:'LES AVIS'
         ),
         BottomNavigationBarItem(
-            icon: Image.asset('assets/nav/group.png', width: _currentIndex==5? 28:25, color:_currentIndex==5?Constantes.Colorjaune:Constantes.Colorwhite),
+            icon: Image.asset('assets/nav/group.png', width: _currentIndex==5? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==5?Constantes.Colorjaune:Constantes.Colorwhite),
             label:'LA COMMUNAUTE'
         ),
       ],

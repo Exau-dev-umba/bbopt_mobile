@@ -23,8 +23,6 @@ class ProfilPage extends StatelessWidget {
                   children: [
                     Image.asset(
                       "assets/images/user.png",
-                      // width: 90,
-                      // height: 90,
                       fit: BoxFit.cover,
                     ),
                     Positioned(
@@ -62,14 +60,14 @@ class ProfilPage extends StatelessWidget {
             trailing: ClipOval(
               child: Container(
                 color: Colors.red,
-                width: 20,
-                height: 20,
+                width: Adaptive.w(5),
+                height: 2.9.h,
                 child: Center(
                   child: Text(
                     '8',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 12,
+                      fontSize: 16.sp,
                     ),
                   ),
                 ),

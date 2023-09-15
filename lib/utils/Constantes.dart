@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../models/MessageModel.dart';
+
 class Constantes{
   static const Color ColorvertFonce = Color.fromRGBO(35, 110, 72, 1);
   static const Color ColorvertPal = Color.fromRGBO(181, 220, 121, 1);
@@ -11,7 +13,53 @@ class Constantes{
   static const Color Colorwhite = Colors.white;
   static const Color Colorblack = Colors.black;
 
-  static const List  dataCharte = [
+  static const String  BASE_URL = "http://3.99.11.155:80";
+
+
+  static List<MessageModel> messages = [
+    MessageModel(
+        text: 'Yes it\'s cool',
+        date: DateTime.now().subtract(Duration(minutes: 1)),
+        isSendByMe: true
+    ),
+    MessageModel(
+        text: 'Okay',
+        date: DateTime.now().subtract(Duration(minutes: 1)),
+        isSendByMe: false
+    ),
+    MessageModel(
+        text: 'Thanks',
+        date: DateTime.now().subtract(Duration(minutes: 1)),
+        isSendByMe: true
+    ),
+    MessageModel(
+        text: 'Good !',
+        date: DateTime.now().subtract(Duration(minutes: 1)),
+        isSendByMe: false
+    ),
+    MessageModel(
+        text: 'Thanks',
+        date: DateTime.now().subtract(Duration(minutes: 1)),
+        isSendByMe: true
+    ),
+    MessageModel(
+        text: 'Hello',
+        date: DateTime(2022).subtract(Duration(minutes: 1)),
+        isSendByMe: false
+    ),
+    MessageModel(
+        text: 'Oui !',
+        date: DateTime(2021).subtract(Duration(minutes: 1)),
+        isSendByMe: true
+    ),
+    MessageModel(
+        text: 'Comment ?',
+        date: DateTime.now().subtract(Duration(minutes: 1)),
+        isSendByMe: false
+    ),
+  ].reversed.toList();
+
+  static  List<Map<String, dynamic>> dataCharte = [
     {'day': 'Mon', 'value': 140, 'group': 1},
     {'day': 'Tue', 'value': 232, 'group': 1},
     {'day': 'Wed', 'value': 101, 'group': 1},

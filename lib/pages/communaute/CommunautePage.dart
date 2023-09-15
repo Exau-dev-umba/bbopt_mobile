@@ -52,15 +52,15 @@ class _CommunautePageState extends State<CommunautePage> {
               Image.asset(
                 image,
                 fit: BoxFit.cover,
-                width: double.infinity,
+                width: Adaptive.w(double.infinity),
               ),
               Positioned(
-                top: 30,
-                left: 20,
+                top: 25.sp,
+                left: 20.sp,
                 child: Image.asset(
                   "assets/images/user.png",
-                  width: 25,
-                  height: 25,
+                  width: 10.w,
+                  height: 3.h,
                 ),
               ),
             ],
@@ -68,8 +68,8 @@ class _CommunautePageState extends State<CommunautePage> {
           Container(
               color: Constantes.Colorwhite,
               alignment: Alignment.center,
-              width: double.infinity,
-              height: 60,
+              width: Adaptive.w(double.infinity),
+              height: 10.h,
               child: Padding(
                 padding: const EdgeInsets.only(left:20, right:20),
                 child: Row(
