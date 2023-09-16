@@ -1,6 +1,10 @@
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../../controllers/AuthenticationController.dart';
+import '../../utils/Message.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -109,9 +113,9 @@ class _LoginPageState extends State<LoginPage> {
     if (value == null || value.isEmpty) {
       return 'Please enter your email';
     }
-    if (!value.contains('@')) {
-      return 'Please enter a valid email';
-    }
+    // if (!value.contains('@')) {
+    //   return 'Please enter a valid email';
+    // }
     return null;
   }
 
@@ -127,7 +131,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // A method to handle the login button press
-  void login() {
+  void login() async{
+    FocusScope.of(context).requestFocus(new FocusNode());
     // Validate the form inputs
     if (formKey.currentState!.validate()) {
       // Get the email and password values
@@ -136,6 +141,30 @@ class _LoginPageState extends State<LoginPage> {
 
       // TODO: Implement your login logic here
 
+      setState(() {});
+      var ctrl = context.read<AuthenticationController>();
+      Map data = {
+        "identifier": email,
+        "password": password
+      };
+      print(data);
+      var res = await ctrl.login(data);
+
+      await Future.delayed(Duration(seconds: 1));
+
+      setState(() {});
+      print(res.status);
+      if (res.status) {
+        await Future.delayed(Duration(seconds: 1));
+        setState(() {});
+        Navigator.popAndPushNamed(context, Routes.homeRoute);
+      } else {
+        var msg =
+        res.isException == true ? res.errorMsg : (res.data?['message']);
+        Message.afficherSnack(context, msg);
+
+      }
+      return;
       // Show a success message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -146,6 +175,7 @@ class _LoginPageState extends State<LoginPage> {
       //Naigate to home page
       Navigator.popAndPushNamed(context, Routes.homeRoute);
     }
+    return;
   }
 
   @override
