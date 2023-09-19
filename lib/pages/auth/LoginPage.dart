@@ -132,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // A method to handle the login button press
   void login() async{
+    Navigator.popAndPushNamed(context, Routes.homeRoute);
     FocusScope.of(context).requestFocus(new FocusNode());
     // Validate the form inputs
     if (formKey.currentState!.validate()) {
@@ -157,7 +158,6 @@ class _LoginPageState extends State<LoginPage> {
       if (res.status) {
         await Future.delayed(Duration(seconds: 1));
         setState(() {});
-        Navigator.popAndPushNamed(context, Routes.homeRoute);
       } else {
         var msg =
         res.isException == true ? res.errorMsg : (res.data?['message']);

@@ -6,6 +6,10 @@ class Endpoints {
   static const String infosUser="/api/user";
   static const String creationChamp="/api/enregistrer-donnees/{champ}";
   static const String champs="/api/champs";
+  static const String nbreChamps="/api/countchamps";
+  static const String nbreTaches="/api/counttask";
+  static const String creerTaches="/api/tasks";
+  static const String meteo="https://api.openweathermap.org/data/2.5/weather";
   static const String historiquecapteur ="/api/historique-capteur";
   static const String historiquecapteurChamps ="/api/historique-capteur/{champId}";
 }
