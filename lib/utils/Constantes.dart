@@ -7,5 +7,6 @@ class Constantes{
   static const Color ColorvertCitron = Color.fromRGBO(118, 188, 33, 1);
   static const Color ColorvertDark = Color.fromRGBO(99, 140, 28, 1);
   static const Color Colorjaune = Color.fromRGBO(255, 198, 41, 1);
+  static const Color Colormauve = Color.fromRGBO(151, 72, 236, 1);
   static const Color Colorwhite = Colors.white;
 }
