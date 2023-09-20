@@ -37,9 +37,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.1.0
   provider: ^6.0.5
-  flutter_launcher_icons: ^0.13.1
   get_storage: ^2.1.1
   badges: ^3.1.2
+  sizer: ^2.0.15
+  responsive_sizer: ^3.2.0
+  graphic: ^2.2.0
+  charts_flutter: ^0.12.0
+  grouped_list: ^4.2.0
+  intl: ^0.17.0
+  quiver: ^3.0.1+1
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +57,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+flutter_icons:
+  android: "launcher_icon"
+  # Executer flutter_launcher_icons:main pour changer le logo de l'application
+  image_path: "assets/logos/LOGO AGRIOPT 2K23 COLOR.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

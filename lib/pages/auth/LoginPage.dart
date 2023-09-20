@@ -1,6 +1,10 @@
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/material.dart';
-import 'package:bbopt_mobile/utils/Constantes.dart';
+import 'package:provider/provider.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../../controllers/AuthenticationController.dart';
+import '../../utils/Message.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -85,10 +89,10 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
         ),
       ),
       style: TextStyle(
-        color: Constantes.Colorwhite,
+        color: Colors.white,
         fontSize: 20,
       ),
-      cursorColor: Constantes.Colorwhite,
+      cursorColor: Colors.white,
     );
 
   }
@@ -109,9 +113,9 @@ class _LoginPageState extends State<LoginPage> {
     if (value == null || value.isEmpty) {
       return 'Please enter your email';
     }
-    if (!value.contains('@')) {
-      return 'Please enter a valid email';
-    }
+    // if (!value.contains('@')) {
+    //   return 'Please enter a valid email';
+    // }
     return null;
   }
 
@@ -127,7 +131,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // A method to handle the login button press
-  void login() {
+  void login() async{
+    Navigator.popAndPushNamed(context, Routes.homeRoute);
+    FocusScope.of(context).requestFocus(new FocusNode());
     // Validate the form inputs
     if (formKey.currentState!.validate()) {
       // Get the email and password values
@@ -136,16 +142,40 @@ class _LoginPageState extends State<LoginPage> {
 
       // TODO: Implement your login logic here
 
+      setState(() {});
+      var ctrl = context.read<AuthenticationController>();
+      Map data = {
+        "identifier": email,
+        "password": password
+      };
+      print(data);
+      var res = await ctrl.login(data);
+
+      await Future.delayed(Duration(seconds: 1));
+
+      setState(() {});
+      print(res.status);
+      if (res.status) {
+        await Future.delayed(Duration(seconds: 1));
+        setState(() {});
+      } else {
+        var msg =
+        res.isException == true ? res.errorMsg : (res.data?['message']);
+        Message.afficherSnack(context, msg);
+
+      }
+      return;
       // Show a success message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Login successful'),
-          backgroundColor: Constantes.ColorvertClair,
+          backgroundColor: Colors.green.shade400,
         ),
       );
       //Naigate to home page
       Navigator.popAndPushNamed(context, Routes.homeRoute);
     }
+    return;
   }
 
   @override
@@ -225,8 +255,8 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.white70,
                             fontSize: 20
                           ),
-                          fillColor: Constantes.Colorwhite,
-                          focusColor: Constantes.Colorwhite,
+                          fillColor: Colors.white,
+                          focusColor: Colors.white,
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.white70
@@ -240,16 +270,16 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.all(4.0),
                               child: Icon(
                                   Icons.mail,
-                                  color: Constantes.Colorwhite
+                                  color: Colors.white
                               ),
                             )
                         ),
                         validator: validateEmail,
                         style: TextStyle(
-                          color: Constantes.Colorwhite,
+                          color: Colors.white,
                           fontSize: 20,
                         ),
-                        cursorColor: Constantes.Colorwhite,
+                        cursorColor: Colors.white,
                       ),
                       SizedBox(height: 15.0),
                       // The password text field widget
@@ -265,7 +295,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text('Se connecter'),
 
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Constantes.ColorvertCitron ),
+                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green.shade700 ),
                         ),
                       ),
                       SizedBox(height: 30.0,),

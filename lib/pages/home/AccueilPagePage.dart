@@ -2,26 +2,32 @@ import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:flutter/material.dart';
 
-class DiagnostiquePage extends StatefulWidget {
-  const DiagnostiquePage({Key? key}) : super(key: key);
+class AccueilPagePage extends StatefulWidget {
+  const AccueilPagePage({Key? key}) : super(key: key);
 
   @override
-  State<DiagnostiquePage> createState() => _DiagnostiquePageState();
+  State<AccueilPagePage> createState() => _AccueilPagePageState();
 }
 
-class _DiagnostiquePageState extends State<DiagnostiquePage> {
+class _AccueilPagePageState extends State<AccueilPagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: ProfilPage(),
       appBar: AppBar(
-        title: Text('DIAGNOSTIQUER', style: TextStyle(color: Constantes.Colorjaune),),
+        title: Text('ACCUEIL', style: TextStyle(color: Constantes.Colorjaune),),
         centerTitle: true,
         backgroundColor: Constantes.ColorvertFonce,
       ),
       body: Container(
-        color: Colors.white,
+        color: Constantes.ColorvertFonce,
       ),
+    );
+  }
+
+  Widget _body(){
+    return Column(
+
     );
   }
 }
