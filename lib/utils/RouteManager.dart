@@ -1,4 +1,5 @@
 import 'package:bbopt_mobile/pages/auth/RegistrationPage.dart';
+import 'package:bbopt_mobile/pages/champs/ChampsPage.dart';
 import 'package:bbopt_mobile/pages/home/HomePage.dart';
 import 'package:bbopt_mobile/pages/auth/LoginPage.dart';
 import 'package:bbopt_mobile/pages/welcome/Splashscreen.dart';
@@ -10,12 +11,16 @@ class RoutesManager {
     switch (r.name) {
       case Routes.splashscreen:
         return MaterialPageRoute(builder: (_)=> Splashscreen());
-      case Routes.homeRoute:
-        return MaterialPageRoute(builder: (_)=> HomePage());
+      case Routes.champRoute:
+        return MaterialPageRoute(builder: (_)=> ChampsPage());
       case Routes.loginpage:
         return MaterialPageRoute(builder: (_) => LoginPage());
+      case Routes.homeRoute:
+        return MaterialPageRoute(builder: (_) => HomePage());
       case Routes.registrationpage:
         return MaterialPageRoute(builder: (_) => RegistrationPage());
+      default:
+        return MaterialPageRoute(builder: (_)=> HomePage());
     }
   }
 }

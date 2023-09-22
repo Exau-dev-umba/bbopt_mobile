@@ -28,16 +28,25 @@ class StatPage extends StatelessWidget {
         ),
         leadingWidth: 50,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(top: 15, right: 20, bottom: 20),
-            child: badges.Badge(
-              child: Icon(CupertinoIcons.bell),
-              badgeStyle: badges.BadgeStyle(
-                badgeColor: Constantes.Colorwhite
+          Row(
+            children: [
+              badges.Badge(
+                position: badges.BadgePosition.custom(top: 10.sp, end: 10.sp),
+                child: IconButton(
+                  icon:Icon(CupertinoIcons.bell),
+                  onPressed: (){},),
+                badgeStyle: badges.BadgeStyle(
+                  badgeColor: Constantes.Colorwhite,
+                ),
               ),
-            ) ,
 
-          )
+              IconButton(
+                padding: EdgeInsets.only(right: 5),
+                icon: Icon(CupertinoIcons.chat_bubble),
+                onPressed: (){},
+              )
+            ],
+          ),
         ],
         centerTitle: true,
         backgroundColor: Constantes.ColorvertFonce,

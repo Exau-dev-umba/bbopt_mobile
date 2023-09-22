@@ -76,8 +76,13 @@ class ProfilPage extends StatelessWidget {
             onTap: () => null,
           ),
           ListTile(
+            leading: Icon(Icons.calendar_month, color: Constantes.Colorwhite,),
+            title: Text('Calendrier', style: TextStyle(color: Constantes.Colorwhite),),
+            onTap: () => null,
+          ),
+          ListTile(
             leading: Icon(Icons.settings, color: Constantes.Colorwhite,),
-            title: Text('Settings', style: TextStyle(color: Constantes.Colorwhite),),
+            title: Text('Paramètres', style: TextStyle(color: Constantes.Colorwhite),),
             onTap: () => null,
           ),
           ListTile(
