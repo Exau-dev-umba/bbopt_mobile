@@ -1,10 +1,14 @@
+import 'package:bbopt_mobile/controllers/TacheController.dart';
 import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../../controllers/ChampController.dart';
 
 class AccueilPagePage extends StatefulWidget {
   const AccueilPagePage({Key? key}) : super(key: key);
@@ -14,6 +18,16 @@ class AccueilPagePage extends StatefulWidget {
 }
 
 class _AccueilPagePageState extends State<AccueilPagePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      var champCtrl = context.read<ChampController>();
+      var tacheCtrl = context.read<TacheController>();
+      champCtrl.recuperNbreChampsAPI();
+      tacheCtrl.recuperNbreTacheAPI();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +64,8 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
   }
 
   Widget _body(){
+    var champCtrl = context.watch<ChampController>();
+    var tacheCtrl = context.watch<TacheController>();
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -124,8 +140,8 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
           ),
           carteAffiche("Météo Locale", "26°", "assets/images/cloudy_1163657.png"),
           carteAffiche("Humidité", "20%", "assets/images/humidity (1).png"),
-          carteAffiche("Vos champs", "0", "assets/images/des-champs (1).png", subtitle: "0 champs en croissance"),
-          carteAffiche("Tâches", "0", "assets/images/target.png"),
+          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", "assets/images/des-champs (1).png", subtitle: "0 champs en croissance"),
+          carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", "assets/images/target.png"),
         ],
       ),
     );

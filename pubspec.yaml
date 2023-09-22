@@ -46,6 +46,8 @@ dependencies:
   grouped_list: ^4.2.0
   intl: ^0.17.0
   quiver: ^3.0.1+1
+  webview_flutter: ^4.2.4
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:

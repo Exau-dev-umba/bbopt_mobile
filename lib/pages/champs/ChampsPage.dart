@@ -1,15 +1,30 @@
 
+import 'package:bbopt_mobile/controllers/ChampController.dart';
 import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class ChampsPage extends StatelessWidget {
+class ChampsPage extends StatefulWidget {
   const ChampsPage({Key? key}) : super(key: key);
 
+  @override
+  State<ChampsPage> createState() => _ChampsPageState();
+}
+
+class _ChampsPageState extends State<ChampsPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      var champCtrl = context.read<ChampController>();
+      champCtrl.recuperChampAPI();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +49,9 @@ class ChampsPage extends StatelessWidget {
       ),
     );
   }
+
   tableau(){
+    var champCtrl = context.watch<ChampController>();
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -128,6 +145,5 @@ class ChampsPage extends StatelessWidget {
       child: Icon(Icons.add),
     );
   }
-
 }
 
