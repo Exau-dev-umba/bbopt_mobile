@@ -20,8 +20,6 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final pages= [
     AccueilPagePage(),
-    DiscuterPage(),
-    CalendrierPage(),
     DiagnostiquePage(),
     StatPage(),
     AvisPage(),
@@ -54,27 +52,19 @@ class _HomePageState extends State<HomePage> {
           label: 'ACCUEIL',
         ),
         BottomNavigationBarItem(
-          icon: Image.asset('assets/nav/chatbot.png', width:_currentIndex==1? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==1?Constantes.Colorjaune:Constantes.Colorwhite),
-          label: 'DISCUTER',
-        ),
-        BottomNavigationBarItem(
-          icon: Image.asset('assets/nav/calendar.png', width: _currentIndex==2? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==2?Constantes.Colorjaune:Constantes.Colorwhite),
-          label: 'CALENDRIER',
-        ),
-        BottomNavigationBarItem(
-          icon: Image.asset('assets/nav/photo-camera.png', width: _currentIndex==3? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==3?Constantes.Colorjaune:Constantes.Colorwhite),
+          icon: Image.asset('assets/nav/photo-camera.png', width: _currentIndex==1? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==1?Constantes.Colorjaune:Constantes.Colorwhite),
           label:'DIAGNOSTIQUER'
         ),
         BottomNavigationBarItem(
-            icon: Image.asset('assets/nav/trend.png', width: _currentIndex==4? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==4?Constantes.Colorjaune:Constantes.Colorwhite),
+            icon: Image.asset('assets/nav/trend.png', width: _currentIndex==2? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==2?Constantes.Colorjaune:Constantes.Colorwhite),
             label:'STATISTIQUE'
         ),
         BottomNavigationBarItem(
-            icon: Image.asset('assets/nav/message.png', width: _currentIndex==5? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==5?Constantes.Colorjaune:Constantes.Colorwhite),
+            icon: Image.asset('assets/nav/message.png', width: _currentIndex==3? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==3?Constantes.Colorjaune:Constantes.Colorwhite),
             label:'LES AVIS'
         ),
         BottomNavigationBarItem(
-            icon: Image.asset('assets/nav/group.png', width: _currentIndex==6? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==6?Constantes.Colorjaune:Constantes.Colorwhite),
+            icon: Image.asset('assets/nav/group.png', width: _currentIndex==4? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==4?Constantes.Colorjaune:Constantes.Colorwhite),
             label:'LA COMMUNAUTE'
         ),
       ],

@@ -1,51 +1,73 @@
+import 'package:bbopt_mobile/controllers/UserController.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class ProfilPage extends StatelessWidget {
+class ProfilPage extends StatefulWidget {
   const ProfilPage({Key? key}) : super(key: key);
 
   @override
+  State<ProfilPage> createState() => _ProfilPageState();
+}
+
+class _ProfilPageState extends State<ProfilPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      var userCtrl = context.read<UserCtrl>();
+      userCtrl.recuperDataAPI();
+    });
+  }
+  @override
   Widget build(BuildContext context) {
+    var userCtrl = context.watch<UserCtrl>();
     return Drawer(
       backgroundColor: Constantes.ColorvertFonce,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('Exaucé Umba', style: TextStyle(color: Constantes.Colorblack, fontWeight: FontWeight.bold),),
-            accountEmail: Text('umbaexauce233@gmail.com', style: TextStyle(color: Constantes.ColorvertFonce),),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Constantes.ColorvertFonce,
-              child: ClipOval(
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      "assets/images/user.png",
-                      fit: BoxFit.cover,
-                    ),
-                    Positioned(
-                      bottom: 5,
-                        right: 5,
-                        child: Icon(Icons.edit, color: Constantes.ColorvertFonce,),
-
-                    )
-                  ],
-                ),
-              ),
-            ),
+            margin: EdgeInsets.zero,
+            accountName: Text('${userCtrl.user?.firstname} ${userCtrl.user?.name}', style: TextStyle(color: Constantes.Colorblack, fontWeight: FontWeight.bold),),
+            accountEmail: Text('${userCtrl.user?.email}', style: TextStyle(color: Constantes.ColorvertFonce),),
+            // currentAccountPicture: CircleAvatar(
+            //   backgroundColor: Constantes.ColorvertFonce,
+            //   child: ClipOval(
+            //     child: Stack(
+            //       children: [
+            //         Image.network(
+            //           "${Constantes.BASE_URL}/${userCtrl.user?.photo}",
+            //           errorBuilder: (BuildContext context, Object exception,
+            //               StackTrace? stackTrace) {
+            //             return Icon(CupertinoIcons.person_alt_circle, size: 35.sp,);
+            //           },
+            //           fit: BoxFit.cover,
+            //         ),
+            //         Positioned(
+            //           bottom: 5,
+            //             right: 5,
+            //             child: Icon(Icons.edit, color: Constantes.ColorvertFonce,),
+            //
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // ),
             decoration: BoxDecoration(
               color: Constantes.Colorwhite,
                 image: DecorationImage(
                     image: AssetImage(
                       "assets/logos/LOGO AGRIOPT 2K23 COLOR.png",
                     ),
-                    fit: BoxFit.cover)),
+                )
+            ),
           ),
           ListTile(
             leading: Icon(Icons.call, color: Constantes.Colorwhite,),
-            title: Text('+243 80 90 84 314', style: TextStyle(color: Constantes.Colorwhite),),
+            title: Text('${userCtrl.user?.phone==null? 'Non défini':userCtrl.user?.phone}', style: TextStyle(color: Constantes.Colorwhite),),
             onTap: () => null,
           ),
           ListTile(
@@ -76,8 +98,13 @@ class ProfilPage extends StatelessWidget {
             onTap: () => null,
           ),
           ListTile(
+            leading: Icon(Icons.calendar_month, color: Constantes.Colorwhite,),
+            title: Text('Calendrier', style: TextStyle(color: Constantes.Colorwhite),),
+            onTap: () => null,
+          ),
+          ListTile(
             leading: Icon(Icons.settings, color: Constantes.Colorwhite,),
-            title: Text('Settings', style: TextStyle(color: Constantes.Colorwhite),),
+            title: Text('Paramètres', style: TextStyle(color: Constantes.Colorwhite),),
             onTap: () => null,
           ),
           ListTile(
