@@ -1,6 +1,9 @@
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/material.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
+import 'package:provider/provider.dart';
+import '../../controllers/AuthenticationController.dart';
+import '../../utils/Message.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -51,7 +54,6 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
       restorationId: 'password_text_field',
       controller: widget.passwordController,
       obscureText: _obscureText.value,
-      maxLength: 15,
       validator: widget.validator,
       decoration: InputDecoration(
         filled: true,
@@ -159,15 +161,43 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   // A method to handle the login button press
-  void login() {
+  void register() async{
     // Validate the form inputs
+    FocusScope.of(context).requestFocus(new FocusNode());
     if (formKey.currentState!.validate()) {
       // Get the email and password values
       String email = emailController.text;
       String password = passwordController.text;
+      String name = nameController.text;
 
       // TODO: Implement your login logic here
+      setState(() {});
+      var ctrl = context.read<AuthenticationController>();
+      Map data = {
+        "name": name,
+        "password": password,
+        "email":email
+      };
+      print(data);
 
+      var res = await ctrl.register(data);
+
+      await Future.delayed(Duration(seconds: 1));
+
+      setState(() {});
+      if (res.status) {
+        await Future.delayed(Duration(seconds: 1));
+        setState(() {});
+        Navigator.popAndPushNamed(context, Routes.homeRoute);
+      } else {
+        var msg =
+        res.isException == true ? res.errorMsg : (res.data?['message']);
+        passwordController.clear();
+        passwordConfirmedController.clear();
+        Message.afficherSnack(context, msg);
+
+      }
+      return;
       // Show a success message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -322,7 +352,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           SizedBox(height: 15.0),
                           // The login button widget
                           ElevatedButton(
-                            onPressed: login,
+                            onPressed: register,
                             child: Text('Créer un compte'),
                             style: ButtonStyle(
                               backgroundColor: MaterialStateColor.resolveWith((states) => Constantes.ColorvertCitron ),

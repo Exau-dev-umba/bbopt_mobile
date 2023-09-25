@@ -5,6 +5,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../controllers/AuthenticationController.dart';
 import '../../utils/Message.dart';
+import 'package:bbopt_mobile/utils/Constantes.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -88,10 +89,10 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
         ),
       ),
       style: TextStyle(
-        color: Colors.white,
+        color: Constantes.Colorwhite,
         fontSize: 20,
       ),
-      cursorColor: Colors.white,
+      cursorColor: Constantes.Colorwhite,
     );
 
   }
@@ -131,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // A method to handle the login button press
   void login() async{
+
     FocusScope.of(context).requestFocus(new FocusNode());
     // Validate the form inputs
     if (formKey.currentState!.validate()) {
@@ -152,7 +154,6 @@ class _LoginPageState extends State<LoginPage> {
       await Future.delayed(Duration(seconds: 1));
 
       setState(() {});
-      print(res.status);
       if (res.status) {
         await Future.delayed(Duration(seconds: 1));
         setState(() {});
@@ -160,6 +161,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         var msg =
         res.isException == true ? res.errorMsg : (res.data?['message']);
+        passwordController.clear();
         Message.afficherSnack(context, msg);
 
       }
@@ -241,7 +243,7 @@ class _LoginPageState extends State<LoginPage> {
                       // The email text field widget
                       Text('Connectez-vous',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Constantes.Colorwhite,
                         fontSize: 30,
                         fontWeight: FontWeight.bold
                       ),),
@@ -254,8 +256,8 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.white70,
                             fontSize: 20
                           ),
-                          fillColor: Colors.white,
-                          focusColor: Colors.white,
+                          fillColor: Constantes.Colorwhite,
+                          focusColor: Constantes.Colorwhite,
                           border: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.white70
@@ -269,16 +271,16 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.all(4.0),
                               child: Icon(
                                   Icons.mail,
-                                  color: Colors.white
+                                  color: Constantes.Colorwhite
                               ),
                             )
                         ),
                         validator: validateEmail,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Constantes.Colorwhite,
                           fontSize: 20,
                         ),
-                        cursorColor: Colors.white,
+                        cursorColor: Constantes.Colorwhite,
                       ),
                       SizedBox(height: 15.0),
                       // The password text field widget
@@ -294,7 +296,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text('Se connecter'),
 
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green.shade700 ),
+                          backgroundColor: MaterialStateColor.resolveWith((states) => Constantes.ColorvertCitron ),
                         ),
                       ),
                       SizedBox(height: 30.0,),
