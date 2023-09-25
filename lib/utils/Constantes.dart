@@ -10,10 +10,12 @@ class Constantes{
   static const Color ColorvertDark = Color.fromRGBO(99, 140, 28, 1);
   static const Color Colormauve = Color.fromRGBO(151, 72, 236, 1);
   static const Color Colorjaune = Color.fromRGBO(255, 198, 41, 1);
+  static const Color ColorLight = Color.fromRGBO(241, 245, 249, 1);
   static const Color Colorwhite = Colors.white;
   static const Color Colorblack = Colors.black;
 
   static const String  BASE_URL = "https://bbopt.net";
+  static const String  WEBVIEW_URL = "http://13.51.242.50:8081";
 
 
   static List<MessageModel> messages = [
