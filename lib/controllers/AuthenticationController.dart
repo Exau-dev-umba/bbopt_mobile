@@ -45,7 +45,7 @@ class AuthenticationController with ChangeNotifier {
   Future<HttpResponse> register(Map data) async{
     var url = "${Endpoints.register}";
     HttpResponse response = await postData(url, data);
-    if (response.status){
+    if (response!=null){
       stockage?.write(StockageKeys.token, response.data?["token"]) ;
       notifyListeners();
     }

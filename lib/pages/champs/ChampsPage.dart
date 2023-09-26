@@ -32,7 +32,7 @@ class _ChampsPageState extends State<ChampsPage> {
       backgroundColor: Constantes.ColorLight,
       appBar: AppBar(
         title: Text("VOS CHAMPS"),
-        leadingWidth: 50,
+        leadingWidth: 25.sp,
         centerTitle: true,
         backgroundColor: Constantes.ColorvertFonce,
       ),
@@ -71,7 +71,7 @@ class _ChampsPageState extends State<ChampsPage> {
                   ),
                   DataColumn(
                       label: Text(
-                        "CULTURES",
+                        "CULTURE",
                         style: TextStyle(
                             color: Constantes.ColorvertFonce,
                             fontWeight: FontWeight.w500
@@ -97,40 +97,14 @@ class _ChampsPageState extends State<ChampsPage> {
                       )
                   ),
                 ],
-                rows: [
-                  DataRow(
-                      cells: [
-                        DataCell(
-                            Text("Manioc")
-                        ),
-                        DataCell(
-                            Text("Manioc")
-                        ),
-                        DataCell(
-                            Text("20°")
-                        ),
-                        DataCell(
-                            Text("En cours")
-                        ),
-                      ]
-                  ),
-                  DataRow(
-                      cells: [
-                        DataCell(
-                            Text("Legumes")
-                        ),
-                        DataCell(
-                            Text("Legumes")
-                        ),
-                        DataCell(
-                            Text("18°")
-                        ),
-                        DataCell(
-                            Text("Près à recolter")
-                        ),
-                      ]
-                  ),
-                ]
+                rows: champCtrl.champ!.map((e) =>DataRow(
+                    cells: <DataCell>[
+                      DataCell(Text("${e.nom}")),
+                      DataCell(Text("Non trouvé")),
+                      DataCell(Text("${e.temperature??'__°'}")),
+                      DataCell(Text("En cours")),
+                    ]
+                ),).toList(),
             ),
           ),
         ],
@@ -140,7 +114,9 @@ class _ChampsPageState extends State<ChampsPage> {
 
   _floatingButtion(){
     return FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          Navigator.pushNamed(context, Routes.createChampRoute);
+        },
       backgroundColor: Constantes.ColorvertFonce,
       child: Icon(Icons.add),
     );

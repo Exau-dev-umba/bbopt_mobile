@@ -5,10 +5,12 @@ import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../controllers/ChampController.dart';
+import '../../utils/location_service.dart';
 
 class AccueilPagePage extends StatefulWidget {
   const AccueilPagePage({Key? key}) : super(key: key);
@@ -25,6 +27,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
       var champCtrl = context.read<ChampController>();
       var tacheCtrl = context.read<TacheController>();
       champCtrl.recuperNbreChampsAPI();
+      champCtrl.recuperChampAPI();
       tacheCtrl.recuperNbreTacheAPI();
     });
   }
@@ -132,22 +135,24 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                           ),
                         )
                     ),
-                    onTap: (){},
+                    onTap: (){
+                      Navigator.pushNamed(context, Routes.createChampRoute);
+                    },
                   )
                 ],
               ),
             ],
           ),
-          carteAffiche("Météo Locale", "26°", "assets/images/cloudy_1163657.png"),
-          carteAffiche("Humidité", "20%", "assets/images/humidity (1).png"),
-          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", "assets/images/des-champs (1).png", subtitle: "0 champs en croissance"),
-          carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", "assets/images/target.png"),
+          carteAffiche("Météo Locale", "26°", image: "assets/images/cloudy_1163657.png"),
+          carteAffiche("Humidité", "20%", image: "assets/images/humidity (1).png"),
+          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "0 champs en croissance"),
+          carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", image: "assets/images/target.png"),
         ],
       ),
     );
   }
   
-  carteAffiche(String title, String value, String image, {String? subtitle}){
+  carteAffiche(String title, String value,  {String? image,String? subtitle})  {
     return Center(
       child: Container(
         padding: EdgeInsets.only(right: 20.sp, left: 20.sp, top: 20.sp),
@@ -201,7 +206,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                     overflow: TextOverflow.ellipsis)
               ],
             ),
-            Image.asset(image, width: Adaptive.w(10),),
+            Image.asset(image!, width: Adaptive.w(10),),
           ],
         ),
       ),

@@ -23,11 +23,13 @@ class _SplashscreenState extends State<Splashscreen> {
       var userCtrl = context.read<UserCtrl>();
       var tkn = stockage?.read(StockageKeys.token);
       Future.delayed(Duration(seconds: 2), (){
-        if(tkn !=null){
+        if(tkn ==null){
+          userCtrl.recuperDataAPI();
+          Navigator.popAndPushNamed(context, Routes.homeRoute);
+        }else{
           Navigator.popAndPushNamed(context, Routes.loginpage);
         }
-        userCtrl.recuperDataAPI();
-        Navigator.popAndPushNamed(context, Routes.homeRoute);
+
 
       });
     });
