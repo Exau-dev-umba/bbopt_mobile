@@ -75,12 +75,14 @@ Future<HttpResponse> patchData(String api_url, Map data,
 Future<HttpResponse> postData(String api_url, Map data, {String? token}) async {
   try {
     var url = Uri.parse("${Constantes.BASE_URL}$api_url");
+    print(url);
     String dataStr = json.encode(data);
     var _tkn = token ?? storage.read(StockageKeys.token);
     var response = await http.post(url, body: dataStr, headers: {
       "Content-Type": "application/json",
       "Authorization": "Bearer $_tkn"
     }).timeout(Duration(seconds: 2));
+    print(response.body);
     if(!kReleaseMode){
       // alice.onHttpResponse(response);
     }
