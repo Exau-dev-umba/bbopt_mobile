@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart';
 
 import '../models/UserModel.dart';
 import '../utils/Endpoints.dart';
@@ -30,6 +31,21 @@ class UserCtrl with ChangeNotifier {
     var reponse = await getData(url, token: token);
     if(reponse!=null){
       user= UserModel.fromJson(reponse);
+      notifyListeners();
+    }
+    loading = false;
+    notifyListeners();
+  }
+
+  void logout() async {
+    var token=stockage?.read(StockageKeys.token) ;
+    var url =Endpoints.logout;
+    loading = true;
+    notifyListeners();
+    //var reponse = await postData(url,{}, token: token);
+    var reponse = null;
+    if(reponse ==null){
+      stockage?.remove(StockageKeys.token);
       notifyListeners();
     }
     loading = false;

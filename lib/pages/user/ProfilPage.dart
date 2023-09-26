@@ -1,7 +1,9 @@
 import 'package:bbopt_mobile/controllers/UserController.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
+import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -130,7 +132,10 @@ class _ProfilPageState extends State<ProfilPage> {
           ListTile(
             title: Text('Déconnexion', style: TextStyle(color: Constantes.Colorwhite),),
             leading: Icon(Icons.exit_to_app, color: Constantes.Colorwhite,),
-            onTap: () => null,
+            onTap: () {
+              userCtrl.logout();
+              Navigator.popAndPushNamed(context, Routes.loginpage);
+            },
           )
         ],
       ),
