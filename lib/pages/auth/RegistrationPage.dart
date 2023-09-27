@@ -1,5 +1,7 @@
+import 'package:bbopt_mobile/controllers/AuthenticationController.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -50,7 +52,6 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
       restorationId: 'password_text_field',
       controller: widget.passwordController,
       obscureText: _obscureText.value,
-      maxLength: 15,
       validator: widget.validator,
       decoration: InputDecoration(
         filled: true,
@@ -98,7 +99,11 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   // A controller for the name text field
-  final nameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final usernameController = TextEditingController();
+
+  final paysController = TextEditingController();
   // A controller for the email text field
   final emailController = TextEditingController();
 
@@ -158,22 +163,29 @@ class _RegistrationPageState extends State<RegistrationPage> {
   }
 
   // A method to handle the login button press
-  void login() {
+  void register() {
+    var authCtrl = context.read<AuthenticationController>();
     // Validate the form inputs
     if (formKey.currentState!.validate()) {
-      // Get the email and password values
+      // Get the firstName, lastName, pays, email, password and passwordConfirmed values
+      String firstName = firstNameController.text;
+      String lastName = lastNameController.text;
+      String username = usernameController.text;
+      String pays = paysController.text;
       String email = emailController.text;
       String password = passwordController.text;
+      String confirmPassword = passwordConfirmedController.text;
 
-      // TODO: Implement your login logic here
-
-      // Show a success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Login successful'),
-          backgroundColor: Colors.green.shade400,
-        ),
-      );
+      Map data = {
+        "name":lastName,
+        "firstname":firstName,
+        "email":email,
+        "username":username,
+        "password":password,
+        "password_confirmation":confirmPassword,
+        "country":pays
+      };
+      authCtrl.register(data);
       //Naigate to home page
       Navigator.popAndPushNamed(context, Routes.homeRoute);
     }
@@ -234,9 +246,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             ),),
                           SizedBox(height: 25.0,),
                           TextFormField(
-                            controller: nameController,
+                            controller: firstNameController,
                             decoration: InputDecoration(
-                                labelText: 'Nom complet',
+                                labelText: 'Prénom',
                                 labelStyle: TextStyle(
                                     color: Colors.white70,
                                     fontSize: 20
@@ -256,6 +268,111 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                   padding: const EdgeInsets.all(4.0),
                                   child: Icon(
                                       Icons.person,
+                                      color: Colors.white
+                                  ),
+                                )
+                            ),
+                            validator: validateName,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                            cursorColor: Colors.white,
+                          ),
+                          SizedBox(height: 15.0),
+                          TextFormField(
+                            controller: lastNameController,
+                            decoration: InputDecoration(
+                                labelText: 'Nom',
+                                labelStyle: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 20
+                                ),
+                                fillColor: Colors.white,
+                                focusColor: Colors.white,
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white70
+                                    )
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white70),
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Icon(
+                                      Icons.person,
+                                      color: Colors.white
+                                  ),
+                                )
+                            ),
+                            validator: validateName,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                            cursorColor: Colors.white,
+                          ),
+                          SizedBox(height: 15.0),
+                          TextFormField(
+                            controller: usernameController,
+                            decoration: InputDecoration(
+                                labelText: 'Username',
+                                labelStyle: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 20
+                                ),
+                                fillColor: Colors.white,
+                                focusColor: Colors.white,
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white70
+                                    )
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white70),
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Icon(
+                                      Icons.person,
+                                      color: Colors.white
+                                  ),
+                                )
+                            ),
+                            validator: validateName,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                            cursorColor: Colors.white,
+                          ),
+                          SizedBox(height: 15.0),
+                          TextFormField(
+                            controller: paysController,
+                            decoration: InputDecoration(
+                                labelText: 'Pays',
+                                labelStyle: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 20
+                                ),
+                                fillColor: Colors.white,
+                                focusColor: Colors.white,
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white70
+                                    )
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white70),
+                                ),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Icon(
+                                      Icons.location_city,
                                       color: Colors.white
                                   ),
                                 )
@@ -321,7 +438,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           SizedBox(height: 15.0),
                           // The login button widget
                           ElevatedButton(
-                            onPressed: login,
+                            onPressed: register,
                             child: Text('Créer un compte'),
                             style: ButtonStyle(
                               backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green.shade700 ),

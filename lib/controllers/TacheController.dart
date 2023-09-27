@@ -20,7 +20,7 @@ class TacheController extends ChangeNotifier{
     notifyListeners();
     var reponse = await getData(url, token: token);
     if(reponse!=null){
-      taches= reponse['data']
+      taches= reponse['tasks']
           .map<TacheModel>((e) => TacheModel.fromJson(e))
           .toList();
       notifyListeners();
@@ -31,7 +31,7 @@ class TacheController extends ChangeNotifier{
 
   void recuperNbreTacheAPI() async {
     var token=stockage?.read(StockageKeys.token) ;
-    var url =Endpoints.nbreChamps;
+    var url =Endpoints.nbreTaches;
     loading = true;
     notifyListeners();
     var reponse = await getData(url, token: token);

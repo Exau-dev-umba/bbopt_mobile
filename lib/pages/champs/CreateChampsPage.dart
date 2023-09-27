@@ -1,5 +1,6 @@
 
 import 'package:bbopt_mobile/controllers/ChampController.dart';
+import 'package:bbopt_mobile/controllers/UserController.dart';
 import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
@@ -20,13 +21,16 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
   TextEditingController nomChamps = TextEditingController();
   TextEditingController location = TextEditingController();
   TextEditingController typeSol = TextEditingController();
+  TextEditingController cultures = TextEditingController();
+  bool isCompleted = false; //check completeness of inputs
   final _formKey = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
-  // TextEditingController nomChamps = TextEditingController();
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      var userCtrl = context.read<UserCtrl>();
+      userCtrl.recuperDataAPI();
       var champCtrl = context.read<ChampController>();
       champCtrl.recuperChampAPI();
     });
@@ -53,14 +57,15 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
       ],
     );
   }
-  List<Map> _myListCulture = [
+  List _myListCulture = [
     {
       "type":"mais"
     }
   ];
+
   List<Step> listOfStep()=>[
      Step(
-      state: _activeStep<=0? StepState.editing:StepState.complete,
+      state: _activeStep<=0? StepState.indexed:StepState.complete,
         isActive:  _activeStep>=0,
         title: Text("Champ"),
         content: Center(
@@ -150,7 +155,7 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
         )
     ),
      Step(
-         state: _activeStep<=1? StepState.editing:StepState.complete,
+         state: _activeStep<=1? StepState.indexed:StepState.complete,
          isActive: _activeStep>=1,
         title: Text("Cultures"),
         content: Center(
@@ -172,6 +177,7 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
                     ),
                     SizedBox(height: 20.sp,),
                     TextFormField(
+                      controller: cultures,
                       decoration: InputDecoration(
                         labelText: 'Ajouter les cultures',
                         hintText: 'eg: manioc, riz...',
@@ -188,7 +194,7 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
                         return null;
                       },
                       onSaved: (value) {
-                        _myListCulture = value! as List<Map>;
+                        _myListCulture = value! as List;
                       },
                     ),
                   ],
@@ -198,7 +204,7 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
         )
     ),
      Step(
-         state: _activeStep<=2? StepState.editing:StepState.complete,
+         state: _activeStep>=2? StepState.complete:StepState.indexed,
          isActive: _activeStep>=2,
         title: Text("Confirmer"),
         content: Column(
@@ -226,7 +232,21 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
     ),
   ];
 
+
   stepCreate(){
+    var userCtrl = context.watch<UserCtrl>();
+
+    Map<String, dynamic> createFormData() {
+      Map<String, dynamic> formData = {
+        'nomChamps': nomChamps.text,
+        'location': location.text,
+        'typeSol': typeSol.text,
+        'cultures': _myListCulture.map((e) => e['type']).toList(),
+        "user_id":userCtrl.user?.id.toString()
+      };
+
+      return formData;
+    }
     return Theme(
       data: ThemeData(
         colorScheme: Theme.of(context).colorScheme.copyWith(
@@ -238,8 +258,26 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
           currentStep: _activeStep,
           steps: listOfStep(),
         onStepContinue: (){
-          if (_activeStep < (listOfStep().length-1)){
-            _activeStep +=1;
+          final isLastStep = _activeStep == (listOfStep().length-1);
+          _formKey.currentState!.validate();
+          _formKey2.currentState!.validate();
+
+          if (_formKey.currentState!.validate() && _formKey2.currentState!.validate()) {
+            Map<String, dynamic> formData = createFormData();
+            // Envoyer le formData à votre destination (par exemple, API, autre page, etc.)
+            // ...
+          }
+          bool isDetailValid = isDetailComplete();
+          if (isDetailValid) {
+            if (isLastStep) {
+              setState(() {
+                isCompleted = true;
+              });
+            } else {
+              setState(() {
+                _activeStep +=1;
+              });
+            }
           }
           setState(() {});
         },
@@ -250,7 +288,7 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
           _activeStep -=1;
           setState(() {});
         },
-        onStepTapped: (value)=> setState(()=>_activeStep=value),
+        // onStepTapped: (value)=> setState(()=>_activeStep=value),
         controlsBuilder: (BuildContext context, ControlsDetails details){
           return Container(
           margin: EdgeInsets.only(top: 25.sp),
@@ -278,6 +316,25 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
         },
       ),
     );
+  }
+
+  bool isDetailComplete() {
+    if (_activeStep == 0) {
+      //check sender fields
+      if (nomChamps.text.isEmpty || location.text.isEmpty || typeSol.text.isEmpty) {
+        return false;
+      } else {
+        return true; //if all fields are not empty
+      }
+    } else if (_activeStep == 1) {
+      //check receiver fields
+      if (cultures.text.isEmpty) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

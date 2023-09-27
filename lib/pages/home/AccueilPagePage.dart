@@ -36,7 +36,17 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
     return Scaffold(
       drawer: ProfilPage(),
       appBar: AppBar(
-        title: Text('ACCUEIL', style: TextStyle(color: Constantes.Colorjaune),),
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/logos/LOGO AGRIOPT 2K23.png',
+              fit: BoxFit.fitWidth,
+              height: MediaQuery.of(context).size.height * 1,
+              width: MediaQuery.of(context).size.width * 0.4,
+            )
+          ],
+        ),
         centerTitle: true,
         backgroundColor: Constantes.ColorvertFonce,
         actions: [
@@ -152,62 +162,64 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
     );
   }
   
-  carteAffiche(String title, String value,  {String? image,String? subtitle})  {
-    return Center(
-      child: Container(
-        padding: EdgeInsets.only(right: 20.sp, left: 20.sp, top: 20.sp),
-        margin: EdgeInsets.only(right: 15.sp, left: 15.sp, bottom: 20.sp),
-        alignment: Alignment.centerRight,
-        width: Adaptive.w(100),
-        height: 15.h,
-        decoration: BoxDecoration(
-          color: Constantes.Colorwhite,
-          borderRadius: BorderRadius.circular(15.sp),
-          boxShadow: [
-            BoxShadow(
-              color: Constantes.Colorblack.withOpacity(.1),
-              offset: const Offset(3,5),
-              spreadRadius: 2.sp,
-              blurRadius: 1.sp
-            )
-          ]
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                      color: Constantes.ColorvertFonce,
-                      fontSize: 19.sp,
-                      fontWeight: FontWeight.w500,
-                      overflow: TextOverflow.ellipsis),
-                ),
-                SizedBox(height: 15.sp,),
-                Text(
-                    value,
+  carteAffiche(String title, String value,  {String? image,String? subtitle, Function? onTap})  {
+    return InkWell(
+      child: Center(
+        child: Container(
+          padding: EdgeInsets.only(right: 20.sp, left: 20.sp, top: 20.sp),
+          margin: EdgeInsets.only(right: 15.sp, left: 15.sp, bottom: 20.sp),
+          alignment: Alignment.centerRight,
+          width: Adaptive.w(100),
+          height: 15.h,
+          decoration: BoxDecoration(
+            color: Constantes.Colorwhite,
+            borderRadius: BorderRadius.circular(15.sp),
+            boxShadow: [
+              BoxShadow(
+                color: Constantes.Colorblack.withOpacity(.1),
+                offset: const Offset(3,5),
+                spreadRadius: 2.sp,
+                blurRadius: 1.sp
+              )
+            ]
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
                     style: TextStyle(
-                        fontSize: 23.sp,
                         color: Constantes.ColorvertFonce,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 19.sp,
+                        fontWeight: FontWeight.w500,
                         overflow: TextOverflow.ellipsis),
+                  ),
+                  SizedBox(height: 15.sp,),
+                  Text(
+                      value,
+                      style: TextStyle(
+                          fontSize: 23.sp,
+                          color: Constantes.ColorvertFonce,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis),
 
-                ),
-                SizedBox(height: 5.sp,),
-                Text(
-                    subtitle ?? "",
-                    style: TextStyle(
-                        fontSize: 15.sp),
-                    overflow: TextOverflow.ellipsis)
-              ],
-            ),
-            Image.asset(image!, width: Adaptive.w(10),),
-          ],
+                  ),
+                  SizedBox(height: 5.sp,),
+                  Text(
+                      subtitle ?? "",
+                      style: TextStyle(
+                          fontSize: 15.sp),
+                      overflow: TextOverflow.ellipsis)
+                ],
+              ),
+              Image.asset(image!, width: Adaptive.w(10),),
+            ],
+          ),
         ),
       ),
     );
