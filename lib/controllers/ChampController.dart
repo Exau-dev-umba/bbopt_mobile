@@ -21,10 +21,22 @@ class ChampController extends ChangeNotifier{
     notifyListeners();
     var reponse = await getData(url, token: token);
     if(reponse!=null){
-      champ= reponse['data']
+      champ= reponse['champs']
           .map<ChampModel>((e) => ChampModel.fromJson(e))
           .toList();
       notifyListeners();
+    }
+    loading = false;
+    notifyListeners();
+  }
+
+  void createChampAPI(Map data) async {
+    var token=stockage?.read(StockageKeys.token) ;
+    var url =Endpoints.champs;
+    loading = true;
+    notifyListeners();
+    var reponse = await postData(url,data, token: token);
+    if(reponse!=null){
     }
     loading = false;
     notifyListeners();

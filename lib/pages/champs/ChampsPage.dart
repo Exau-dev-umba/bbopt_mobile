@@ -1,10 +1,8 @@
 
 import 'package:bbopt_mobile/controllers/ChampController.dart';
-import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -50,7 +48,7 @@ class _ChampsPageState extends State<ChampsPage> {
     );
   }
 
-  tableau(){
+  Widget tableau(){
     var champCtrl = context.watch<ChampController>();
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -71,7 +69,7 @@ class _ChampsPageState extends State<ChampsPage> {
                   ),
                   DataColumn(
                       label: Text(
-                        "CULTURE",
+                        "LOCATION",
                         style: TextStyle(
                             color: Constantes.ColorvertFonce,
                             fontWeight: FontWeight.w500
@@ -80,7 +78,16 @@ class _ChampsPageState extends State<ChampsPage> {
                   ),
                   DataColumn(
                       label: Text(
-                        "TEMPERATURE",
+                        "TYPE DE SOL",
+                        style: TextStyle(
+                            color: Constantes.ColorvertFonce,
+                            fontWeight: FontWeight.w500
+                        ),
+                      )
+                  ),
+                  DataColumn(
+                      label: Text(
+                        "CULTURE",
                         style: TextStyle(
                             color: Constantes.ColorvertFonce,
                             fontWeight: FontWeight.w500
@@ -97,14 +104,21 @@ class _ChampsPageState extends State<ChampsPage> {
                       )
                   ),
                 ],
-                rows: champCtrl.champ!.map((e) =>DataRow(
+                rows: champCtrl.champ!.isNotEmpty? champCtrl.champ!.map((e) =>DataRow(
                     cells: <DataCell>[
                       DataCell(Text("${e.nom}")),
-                      DataCell(Text("Non trouvé")),
-                      DataCell(Text("${e.temperature??'__°'}")),
+                      DataCell(Text("${e.location}")),
+                      DataCell(Text("${e.typeSol}")),
+                      DataCell(Text("${e.cultures?.map((e) => e)}")),
                       DataCell(Text("En cours")),
                     ]
-                ),).toList(),
+                ),).toList(): [
+                  DataRow(cells: [
+                    DataCell(
+                      Text("Aucune donnée trouvé")
+                    )
+                  ])
+                ],
             ),
           ),
         ],
