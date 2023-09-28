@@ -1,7 +1,7 @@
 import 'package:bbopt_mobile/utils/Routes.dart';
+import 'package:bbopt_mobile/utils/widget/Chargement.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../controllers/AuthenticationController.dart';
 import '../../utils/Message.dart';
@@ -99,6 +99,9 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  bool isVisible = false;
+
   // A controller for the email text field
   final emailController = TextEditingController();
 
@@ -132,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // A method to handle the login button press
   void login() async{
-
+    isVisible = true;
     FocusScope.of(context).requestFocus(new FocusNode());
     // Validate the form inputs
     if (formKey.currentState!.validate()) {
@@ -152,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
       var res = await ctrl.login(data);
 
       await Future.delayed(Duration(seconds: 1));
-
+      isVisible = false;
       setState(() {});
       if (res.status) {
         await Future.delayed(Duration(seconds: 1));
@@ -166,15 +169,6 @@ class _LoginPageState extends State<LoginPage> {
 
       }
       return;
-      // Show a success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Login successful'),
-          backgroundColor: Colors.green.shade400,
-        ),
-      );
-      //Naigate to home page
-      Navigator.popAndPushNamed(context, Routes.homeRoute);
     }
     return;
   }
@@ -316,6 +310,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+          Chargement(isVisible)
         ],
       ),
     );

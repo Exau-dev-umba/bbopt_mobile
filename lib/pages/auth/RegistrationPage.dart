@@ -3,6 +3,8 @@ import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/widget/Chargement.dart';
+
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
 
@@ -98,6 +100,7 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
+  bool  isVisible = false;
   // A controller for the name text field
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -165,6 +168,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   // A method to handle the login button press
   void register() {
     var authCtrl = context.read<AuthenticationController>();
+    isVisible = true;
     // Validate the form inputs
     if (formKey.currentState!.validate()) {
       // Get the firstName, lastName, pays, email, password and passwordConfirmed values
@@ -186,6 +190,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         "country":pays
       };
       authCtrl.register(data);
+      isVisible =false;
       //Naigate to home page
       Navigator.popAndPushNamed(context, Routes.homeRoute);
     }
@@ -464,6 +469,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               ),
             ),
           ),
+          Chargement(isVisible)
         ],
       ),
     );
