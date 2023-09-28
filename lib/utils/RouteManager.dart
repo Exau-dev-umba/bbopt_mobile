@@ -5,6 +5,7 @@ import 'package:bbopt_mobile/pages/home/HomePage.dart';
 import 'package:bbopt_mobile/pages/auth/LoginPage.dart';
 import 'package:bbopt_mobile/pages/welcome/Splashscreen.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
+import 'package:bbopt_mobile/pages/tasks/TasksPage.dart';
 import 'package:flutter/material.dart';
 
 class RoutesManager {
@@ -22,6 +23,8 @@ class RoutesManager {
         return MaterialPageRoute(builder: (_) => HomePage());
       case Routes.registrationpage:
         return MaterialPageRoute(builder: (_) => RegistrationPage());
+      case Routes.taskRoute:
+        return MaterialPageRoute(builder: (_) => TasksPage());
       default:
         return MaterialPageRoute(builder: (_)=> HomePage());
     }

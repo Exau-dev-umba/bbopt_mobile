@@ -153,17 +153,20 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
               ),
             ],
           ),
-          carteAffiche("Météo Locale", "26°", image: "assets/images/cloudy_1163657.png"),
-          carteAffiche("Humidité", "20%", image: "assets/images/humidity (1).png"),
-          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "0 champs en croissance"),
-          carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", image: "assets/images/target.png"),
+          carteAffiche("Météo Locale", "26°", image: "assets/images/cloudy_1163657.png", ""),
+          carteAffiche("Humidité", "20%", image: "assets/images/humidity (1).png", ""),
+          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "0 champs en croissance", ""),
+          carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", image: "assets/images/target.png", Routes.taskRoute),
         ],
       ),
     );
   }
   
-  carteAffiche(String title, String value,  {String? image,String? subtitle, Function? onTap})  {
+  carteAffiche(String title, String value, String routeName, {String? image,String? subtitle})  {
     return InkWell(
+      onTap: (){
+        Navigator.pushNamed(context, routeName);
+      },
       child: Center(
         child: Container(
           padding: EdgeInsets.only(right: 20.sp, left: 20.sp, top: 20.sp),
