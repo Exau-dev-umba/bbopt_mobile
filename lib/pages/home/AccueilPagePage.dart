@@ -104,7 +104,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                             ]
                         ),
                         child: Text(
-                          "Vos champs",
+                          "Créer une tache",
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
                             color: Constantes.Colorblack
@@ -113,7 +113,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                         )
                     ),
                     onTap: (){
-                      Navigator.pushNamed(context, Routes.champRoute);
+                      // Navigator.pushNamed(context, Routes.champRoute);
                     },
                   )
                 ],
@@ -155,7 +155,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
           ),
           carteAffiche("Météo Locale", "26°", image: "assets/images/cloudy_1163657.png", ""),
           carteAffiche("Humidité", "20%", image: "assets/images/humidity (1).png", ""),
-          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "0 champs en croissance", ""),
+          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "0 champs en croissance", Routes.champRoute),
           carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", image: "assets/images/target.png", Routes.taskRoute),
         ],
       ),
