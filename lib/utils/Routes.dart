@@ -10,4 +10,5 @@ class Routes {
   static const String statRoute = "stat";
   static const String loginpage = "login";
   static const String registrationpage = "registration";
+  static const String taskRoute = "tasks";
 }
