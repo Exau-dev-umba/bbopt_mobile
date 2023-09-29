@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../controllers/ChampController.dart';
+import '../../controllers/UserController.dart';
 import '../../utils/location_service.dart';
 
 class AccueilPagePage extends StatefulWidget {
@@ -26,6 +27,8 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var champCtrl = context.read<ChampController>();
       var tacheCtrl = context.read<TacheController>();
+      var userCtrl = context.read<UserCtrl>();
+      userCtrl.recuperDataAPI();
       champCtrl.recuperNbreChampsAPI();
       champCtrl.recuperChampAPI();
       tacheCtrl.recuperNbreTacheAPI();
@@ -155,7 +158,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
           ),
           carteAffiche("Météo Locale", "26°", image: "assets/images/cloudy_1163657.png", ""),
           carteAffiche("Humidité", "20%", image: "assets/images/humidity (1).png", ""),
-          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "0 champs en croissance", Routes.champRoute),
+          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "${champCtrl.nbrChamp?? '0'} culture(s) en croissance", Routes.champRoute),
           carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", image: "assets/images/target.png", Routes.taskRoute),
         ],
       ),
@@ -212,7 +215,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                           overflow: TextOverflow.ellipsis),
 
                   ),
-                  SizedBox(height: 5.sp,),
+                  SizedBox(height: 1.sp,),
                   Text(
                       subtitle ?? "",
                       style: TextStyle(

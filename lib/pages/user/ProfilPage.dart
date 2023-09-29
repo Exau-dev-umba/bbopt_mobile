@@ -33,8 +33,8 @@ class _ProfilPageState extends State<ProfilPage> {
         children: [
           UserAccountsDrawerHeader(
             margin: EdgeInsets.zero,
-            accountName: Text('${userCtrl.user?.firstname} ${userCtrl.user?.name}', style: TextStyle(color: Constantes.Colorblack, fontWeight: FontWeight.bold),),
-            accountEmail: Text('${userCtrl.user?.email}', style: TextStyle(color: Constantes.ColorvertFonce),),
+            accountName: Text('${userCtrl.user?.firstname?? '...'} ${userCtrl.user?.name??'...'}', style: TextStyle(color: Constantes.Colorblack, fontWeight: FontWeight.bold),),
+            accountEmail: Text('${userCtrl.user?.email?? '...@...'}', style: TextStyle(color: Constantes.ColorvertFonce),),
             // currentAccountPicture: CircleAvatar(
             //   backgroundColor: Constantes.ColorvertFonce,
             //   child: ClipOval(

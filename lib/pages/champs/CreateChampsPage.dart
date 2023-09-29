@@ -4,11 +4,14 @@ import 'package:bbopt_mobile/controllers/UserController.dart';
 import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
+import 'package:bbopt_mobile/utils/widget/Chargement.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../../models/CultureModel.dart';
 
 class CreateChampsPage extends StatefulWidget {
   const CreateChampsPage({Key? key}) : super(key: key);
@@ -22,6 +25,8 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
   TextEditingController location = TextEditingController();
   TextEditingController typeSol = TextEditingController();
   TextEditingController cultures = TextEditingController();
+  List<Map<String, dynamic>> culturesList = [];
+  var list;
   bool isCompleted = false; //check completeness of inputs
   final _formKey = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
@@ -57,11 +62,6 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
       ],
     );
   }
-  List _myListCulture = [
-    {
-      "type":"mais"
-    }
-  ];
 
   List<Step> listOfStep()=>[
      Step(
@@ -194,7 +194,11 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
                         return null;
                       },
                       onSaved: (value) {
-                        _myListCulture = value! as List;
+                        setState(() {
+                           list =culturesList.map((e) {
+                            e['type'] = value!;
+                          });
+                        });
                       },
                     ),
                   ],
@@ -226,7 +230,11 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
             SizedBox(height: 10.sp,),
             Text("Type de sol : ${typeSol.text}",style: TextStyle(fontSize: 18.sp),),
             SizedBox(height: 10.sp,),
-            Text("Cultures : ${_myListCulture.map((e) => e['type']).toList()}",style: TextStyle(fontSize: 18.sp),),
+            // Text("Cultures :"),
+            // Column(
+            //   children: culturesList.map((culture) => Text(culture['type']!)).toList(),
+            // ),
+            Text("Cultures : ${culturesList.map((culture) => Text(culture['type']!)).toList()}", style: TextStyle(fontSize: 18.sp)),
           ],
         )
     ),
@@ -235,18 +243,19 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
 
   stepCreate(){
     var userCtrl = context.watch<UserCtrl>();
+    var champCtrl = context.watch<ChampController>();
 
-    Map<String, dynamic> createFormData() {
+    // List<Map<String, dynamic>> culturesJsonList = culturesList.map((culture) => culture.toJson()).toList();
+
       Map<String, dynamic> formData = {
-        'nomChamps': nomChamps.text,
+        'nom': nomChamps.text,
         'location': location.text,
-        'typeSol': typeSol.text,
-        'cultures': _myListCulture.map((e) => e['type']).toList(),
+        'type_sol': typeSol.text,
+        'cultures': culturesList.map((e) =>{
+          e['type']
+        }),
         "user_id":userCtrl.user?.id.toString()
       };
-
-      return formData;
-    }
     return Theme(
       data: ThemeData(
         colorScheme: Theme.of(context).colorScheme.copyWith(
@@ -262,10 +271,14 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
           _formKey.currentState!.validate();
           _formKey2.currentState!.validate();
 
-          if (_formKey.currentState!.validate() && _formKey2.currentState!.validate()) {
-            Map<String, dynamic> formData = createFormData();
+          if ((
+              _activeStep == (listOfStep().length-1))
+              &&_formKey.currentState!.validate()
+              && _formKey2.currentState!.validate()) {
             // Envoyer le formData à votre destination (par exemple, API, autre page, etc.)
-            // ...
+            print("DATA A ENVOYER : ${formData}");
+            print("${cultures.text}----${list}");
+            // champCtrl.createChampAPI(formData);
           }
           bool isDetailValid = isDetailComplete();
           if (isDetailValid) {

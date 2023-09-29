@@ -26,7 +26,6 @@ class StatPage extends StatelessWidget {
             )
           ],
         ),
-        leadingWidth: 50,
         actions: [
           Row(
             children: [
@@ -72,19 +71,19 @@ class StatPage extends StatelessWidget {
         SingleChildScrollView(
           child: Column(
               children: [
-                _carte("INFORMATION DE VOTRE PLANTATION", 'assets/images/cornfield.jpg', Constantes.ColorvertFonce, Constantes.Colorwhite, onTap:(){}),
-                _carte("INFORMATION SUR LA RECOLTE", 'assets/images/rice9.jpg', Constantes.ColorvertFonce, Constantes.Colorwhite, onTap:(){}),
+                _carte("INFORMATION DE VOTRE PLANTATION", 'assets/images/cornfield.jpgg', Constantes.ColorvertFonce, Constantes.Colorwhite, onTap:(){}),
+                _carte("INFORMATION SUR LA RECOLTE", 'assets/images/rice9.jpgg', Constantes.ColorvertFonce, Constantes.Colorwhite, onTap:(){}),
                 _carte(
                     "DONNEES METEO",
-                    'assets/images/cloudy_1163657.png',
+                    'assets/images/cloudy_1163657.pngg',
                     Constantes.Colormauve,
                     Constantes.Colorwhite,
                     onTap:(){
                       // Navigator.pushNamed(context, Routes.donneeMeteo);
                     }
                 ),
-                _carteGrand("CONSULTEZ NOS ABONNEMENTS", 'assets/images/30894.jpg', Constantes.ColorvertFonce, Constantes.Colorjaune, onTap:(){}),
-                _carteGrand("CONSEIL D'UN AGRONOME", 'assets/images/30894.jpg', Constantes.ColorvertFonce, Constantes.Colorjaune, onTap:(){}),
+                _carteGrand("CONSULTEZ NOS ABONNEMENTS", 'assets/images/30894.jpgg', Constantes.ColorvertFonce, Constantes.Colorjaune, onTap:(){}),
+                _carteGrand("CONSEIL D'UN AGRONOME", 'assets/images/30894.jpgg', Constantes.ColorvertFonce, Constantes.Colorjaune, onTap:(){}),
               ]
           ),
         ),
