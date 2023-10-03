@@ -1,17 +1,12 @@
 
 import 'package:bbopt_mobile/controllers/ChampController.dart';
 import 'package:bbopt_mobile/controllers/UserController.dart';
-import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
-import 'package:bbopt_mobile/utils/Routes.dart';
-import 'package:bbopt_mobile/utils/widget/Chargement.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../models/CultureModel.dart';
 
 class CreateChampsPage extends StatefulWidget {
   const CreateChampsPage({Key? key}) : super(key: key);
@@ -25,7 +20,7 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
   TextEditingController location = TextEditingController();
   TextEditingController typeSol = TextEditingController();
   TextEditingController cultures = TextEditingController();
-  List<Map<String, dynamic>> culturesList = [];
+  List<Map<String, String>> culturesList = [];
   var list;
   bool isCompleted = false; //check completeness of inputs
   final _formKey = GlobalKey<FormState>();
@@ -195,9 +190,11 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
                       },
                       onSaved: (value) {
                         setState(() {
-                           list =culturesList.map((e) {
-                            e['type'] = value!;
-                          });
+                          // var cultures = value?.split(",");
+                          // for(var culture in cultures!) {
+                          //   culturesList.add({"type": culture.trim()});
+                          //   // print("DATA TAPER : =${cultures}");
+                          // }
                         });
                       },
                     ),
@@ -230,11 +227,7 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
             SizedBox(height: 10.sp,),
             Text("Type de sol : ${typeSol.text}",style: TextStyle(fontSize: 18.sp),),
             SizedBox(height: 10.sp,),
-            // Text("Cultures :"),
-            // Column(
-            //   children: culturesList.map((culture) => Text(culture['type']!)).toList(),
-            // ),
-            Text("Cultures : ${culturesList.map((culture) => Text(culture['type']!)).toList()}", style: TextStyle(fontSize: 18.sp)),
+            Text("Cultures : ${cultures.text}", style: TextStyle(fontSize: 18.sp)),
           ],
         )
     ),
@@ -244,16 +237,19 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
   stepCreate(){
     var userCtrl = context.watch<UserCtrl>();
     var champCtrl = context.watch<ChampController>();
+    var culturesTemp;
+    culturesTemp = cultures.text.trim().split(",");
+    culturesList.clear();
+    for(String culture in culturesTemp) {
+      culturesList.add({"type": culture});
+    }
 
-    // List<Map<String, dynamic>> culturesJsonList = culturesList.map((culture) => culture.toJson()).toList();
 
       Map<String, dynamic> formData = {
         'nom': nomChamps.text,
-        'location': location.text,
-        'type_sol': typeSol.text,
-        'cultures': culturesList.map((e) =>{
-          e['type']
-        }),
+        'location': location.text.trim(),
+        'type_sol': typeSol.text.trim(),
+        'cultures': culturesList,
         "user_id":userCtrl.user?.id.toString()
       };
     return Theme(
@@ -275,10 +271,12 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
               _activeStep == (listOfStep().length-1))
               &&_formKey.currentState!.validate()
               && _formKey2.currentState!.validate()) {
-            // Envoyer le formData à votre destination (par exemple, API, autre page, etc.)
+            // Envoyer le formData à l'API
             print("DATA A ENVOYER : ${formData}");
-            print("${cultures.text}----${list}");
-            // champCtrl.createChampAPI(formData);
+            // print("DATA TAPER : ${culturesList}");
+            champCtrl.createChampAPI(formData);
+            Navigator.pop(context);
+            setState(() {});
           }
           bool isDetailValid = isDetailComplete();
           if (isDetailValid) {
