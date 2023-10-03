@@ -4,6 +4,7 @@ class Routes {
   static const String donneeMeteo = "donneeMeteo";
   static const String homeRoute = "homePage";
   static const String champRoute = "VoirChamp";
+  static const String singleChampRoute = "SingleChamp";
   static const String createChampRoute = "createChamp";
   static const String communauteRoute = "discuter";
   static const String avisRoute = "avis";

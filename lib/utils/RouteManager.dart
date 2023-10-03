@@ -1,6 +1,8 @@
+import 'package:bbopt_mobile/models/ChampModel.dart';
 import 'package:bbopt_mobile/pages/auth/RegistrationPage.dart';
 import 'package:bbopt_mobile/pages/champs/ChampsPage.dart';
 import 'package:bbopt_mobile/pages/champs/CreateChampsPage.dart';
+import 'package:bbopt_mobile/pages/champs/DetailChampsPage.dart';
 import 'package:bbopt_mobile/pages/home/HomePage.dart';
 import 'package:bbopt_mobile/pages/auth/LoginPage.dart';
 import 'package:bbopt_mobile/pages/welcome/Splashscreen.dart';
@@ -15,6 +17,11 @@ class RoutesManager {
         return MaterialPageRoute(builder: (_)=> Splashscreen());
       case Routes.champRoute:
         return MaterialPageRoute(builder: (_)=> ChampsPage());
+      case Routes.singleChampRoute:
+        var args = r.arguments as Map<String, dynamic>?;
+        Map<String, dynamic> chooseChamp ={};
+        var champData = ChampModel.fromJson(args!);
+        return MaterialPageRoute(builder: (_)=> DetailChampsPage(champ: champData));
       case Routes.createChampRoute:
         return MaterialPageRoute(builder: (_)=> CreateChampsPage());
       case Routes.loginpage:

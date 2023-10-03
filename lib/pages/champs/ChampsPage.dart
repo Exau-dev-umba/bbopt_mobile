@@ -106,7 +106,10 @@ class _ChampsPageState extends State<ChampsPage> {
                 ],
                 rows: champCtrl.champ!.isNotEmpty? champCtrl.champ!.map((e) =>DataRow(
                     cells: <DataCell>[
-                      DataCell(Text("${e.nom}")),
+                      DataCell(Text("${e.nom}"),
+                          onTap: (){
+                        Navigator.pushNamed(context, Routes.singleChampRoute, arguments: e.toJson());
+                      }),
                       DataCell(Text("${e.location}")),
                       DataCell(Text("${e.typeSol}")),
                       DataCell(Text("${e.cultures?.map((e) => e)}")),
