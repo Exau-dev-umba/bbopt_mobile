@@ -15,13 +15,13 @@ class Splashscreen extends StatefulWidget {
 }
 
 class _SplashscreenState extends State<Splashscreen> {
-  GetStorage? stockage;
+  GetStorage stockage = GetStorage();
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var userCtrl = context.read<UserCtrl>();
-      var tkn = stockage?.read(StockageKeys.token);
+      var tkn = stockage.read(StockageKeys.token);
       Future.delayed(Duration(seconds: 2), (){
         if(tkn ==null){
           Navigator.popAndPushNamed(context, Routes.loginpage);

@@ -24,6 +24,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
   @override
   void initState() {
     super.initState();
+    setState(() {});
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var champCtrl = context.read<ChampController>();
       var tacheCtrl = context.read<TacheController>();
@@ -32,6 +33,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
       champCtrl.recuperNbreChampsAPI();
       champCtrl.recuperChampAPI();
       tacheCtrl.recuperNbreTacheAPI();
+      tacheCtrl.recuperTachesAPI();
     });
   }
   @override
@@ -169,6 +171,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
     return InkWell(
       onTap: (){
         Navigator.pushNamed(context, routeName);
+        setState(() {});
       },
       child: Center(
         child: Container(
