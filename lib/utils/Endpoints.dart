@@ -6,6 +6,7 @@ class Endpoints {
   static const String infosUser="/api/user";
   static const String creationChamp="/api/enregistrer-donnees/{champ}";
   static const String champs="/api/champs";
+  static const String signleChamps="/api/champs/{id}";
   static const String nbreChamps="/api/countchamps";
   static const String nbreTaches="/api/counttask";
   static const String taches="/api/tasks";

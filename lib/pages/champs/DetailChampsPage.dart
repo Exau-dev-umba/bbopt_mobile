@@ -1,9 +1,7 @@
-import 'package:bbopt_mobile/controllers/ChampController.dart';
 import 'package:bbopt_mobile/models/ChampModel.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class DetailChampsPage extends StatelessWidget {
@@ -53,7 +51,7 @@ class DetailChampsPage extends StatelessWidget {
                 decoration: new BoxDecoration(
                   image: new DecorationImage(
                     image: new AssetImage(
-                        "assets/images/side-view-hands-holding-plant.jpg"),
+                        "assets/images/31172.jpg"),
                     fit: BoxFit.cover,
                   ),
                 )),
@@ -61,7 +59,7 @@ class DetailChampsPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.5,
               padding: EdgeInsets.all(40.0),
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
+              decoration: BoxDecoration(color: Colors.black87,),
               child:  topContentText()       /*Text(
                 champ.nom!,
                 style: TextStyle(fontSize: 18.0),
@@ -100,31 +98,33 @@ class DetailChampsPage extends StatelessWidget {
       children: <Widget>[
         SizedBox(height: 10.0.h),
         Icon(
-          Icons.directions_car,
+          Icons.local_florist_outlined,
           color: Colors.white,
-          size: 25.0.sp,
+          size: 28.0.sp,
         ),
         Container(
-          width: 90.0,
+          width: Adaptive.w(40),
           child: new Divider(color: Constantes.ColorvertClair),
         ),
         SizedBox(height: 10.0),
         Text(
           champ.nom!,
-          style: TextStyle(color: Colors.white, fontSize: 45.0),
+          style: TextStyle(color: Colors.white, fontSize: 30.0.sp),
+          overflow: TextOverflow.ellipsis,
         ),
-        SizedBox(height: 30.0),
+        SizedBox(height: 20.0.sp),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            // Expanded(flex: 1, child: levelIndicator),
+            Text("Culture(s) :".toUpperCase(),style: TextStyle(color: Colors.white)),
+            // Expanded(flex: 1, child: Text("Culture(s) :")),
             Expanded(
                 flex: 6,
                 child: Padding(
-                    padding: EdgeInsets.only(left: 10.0),
+                    padding: EdgeInsets.only(left: 10.0.sp),
                     child: Row(
                       children: champ.cultures!.map((e) {
-                        return Text("${e}",style: TextStyle(color: Colors.white));
+                        return Text("${e} ",style: TextStyle(color: Colors.white), overflow: TextOverflow.ellipsis,);
                       }).toList(),
                     ))),
             // Expanded(flex: 1, child: coursePrice)

@@ -12,7 +12,25 @@ class DiagnostiquePage extends StatefulWidget {
 
 class _DiagnostiquePageState extends State<DiagnostiquePage> {
   WebViewController controller = WebViewController()
-  ..loadRequest(Uri.parse("https://pub.dev"));
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..setBackgroundColor(const Color(0x00000000))
+    ..setNavigationDelegate(
+      NavigationDelegate(
+        onProgress: (int progress) {
+          // Update loading bar.
+        },
+        onPageStarted: (String url) {},
+        onPageFinished: (String url) {},
+        onWebResourceError: (WebResourceError error) {},
+        onNavigationRequest: (NavigationRequest request) {
+          if (request.url.startsWith('http://13.51.242.50:8081')) {
+            return NavigationDecision.prevent;
+          }
+          return NavigationDecision.navigate;
+        },
+      ),
+    )
+    ..loadRequest(Uri.parse('http://13.51.242.50:8081'));
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +41,7 @@ class _DiagnostiquePageState extends State<DiagnostiquePage> {
         centerTitle: true,
         backgroundColor: Constantes.ColorvertFonce,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            webViewDiagnostiquer()
-          ],
-        ),
-      )
+      body: webViewDiagnostiquer()
     );
   }
   

@@ -30,6 +30,22 @@ class ChampController extends ChangeNotifier{
     notifyListeners();
   }
 
+  void recuperSingleChampAPI(id) async {
+    var token=stockage?.read(StockageKeys.token) ;
+    var url =Endpoints.signleChamps.replaceAll("{id}", id);
+    loading = true;
+    notifyListeners();
+    var reponse = await getData(url, token: token);
+    if(reponse!=null){
+      champ= reponse['champs']
+          .map<ChampModel>((e) => ChampModel.fromJson(e))
+          .toList();
+      notifyListeners();
+    }
+    loading = false;
+    notifyListeners();
+  }
+
   void createChampAPI(Map data) async {
     var token=stockage?.read(StockageKeys.token) ;
     var url =Endpoints.champs;
