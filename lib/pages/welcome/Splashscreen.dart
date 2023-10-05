@@ -5,7 +5,8 @@ import 'package:bbopt_mobile/utils/StockageKeys.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../../utils/location_service.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({Key? key}) : super(key: key);
@@ -20,6 +21,8 @@ class _SplashscreenState extends State<Splashscreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      var location = context.read<LocationService>();
+      location.locationService();
       var userCtrl = context.read<UserCtrl>();
       var tkn = stockage.read(StockageKeys.token);
       Future.delayed(Duration(seconds: 2), (){

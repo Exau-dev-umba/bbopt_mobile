@@ -1,3 +1,5 @@
+
+import 'package:bbopt_mobile/controllers/MeteoController.dart';
 import 'package:bbopt_mobile/controllers/TacheController.dart';
 import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
@@ -5,10 +7,8 @@ import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-
 import '../../controllers/ChampController.dart';
 import '../../controllers/UserController.dart';
 import '../../utils/location_service.dart';
@@ -29,6 +29,10 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
       var champCtrl = context.read<ChampController>();
       var tacheCtrl = context.read<TacheController>();
       var userCtrl = context.read<UserCtrl>();
+      var meteo = context.read<MeteoController>();
+      var location = context.read<LocationService>();
+      location.locationService();
+      meteo.getWeatherData(latitude: location.latitude, longitude: location.longitude);
       userCtrl.recuperDataAPI();
       champCtrl.recuperNbreChampsAPI();
       champCtrl.recuperChampAPI();
@@ -84,6 +88,8 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
   Widget _body(){
     var champCtrl = context.watch<ChampController>();
     var tacheCtrl = context.watch<TacheController>();
+    var meteo = context.watch<MeteoController>();
+    var location = context.watch<LocationService>();
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -118,6 +124,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                         )
                     ),
                     onTap: (){
+                      print("DATA   :${location.latitude} - ${location.longitude}");
                       // Navigator.pushNamed(context, Routes.champRoute);
                     },
                   )
@@ -158,19 +165,22 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
               ),
             ],
           ),
-          carteAffiche("Météo Locale", "26°", image: "assets/images/cloudy_1163657.png", ""),
-          carteAffiche("Humidité", "20%", image: "assets/images/humidity (1).png", ""),
-          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "${champCtrl.nbrChamp?? '0'} culture(s) en croissance", Routes.champRoute),
-          carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", image: "assets/images/target.png", Routes.taskRoute),
+          carteAffiche(
+              "Météo Locale",
+              "${meteo.temperature.toStringAsFixed(1)}°C",
+              image: "${meteo.iconUrl!=''?meteo.iconUrl:"assets/images/cloudy_1163657.png"}", "",1),
+          carteAffiche("Humidité", "20%", image: "assets/images/humidity (1).png", "",2),
+          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "${champCtrl.nbrChamp?? '0'} culture(s) en croissance", Routes.champRoute,3),
+          carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", image: "assets/images/target.png", Routes.taskRoute,4),
         ],
       ),
     );
   }
   
-  carteAffiche(String title, String value, String routeName, {String? image,String? subtitle})  {
+  carteAffiche(String title, String value, String routeName, int index, {String? image,String? subtitle})  {
     return InkWell(
       onTap: (){
-        Navigator.pushNamed(context, routeName);
+        routeName==""?null:Navigator.pushNamed(context, routeName);
         setState(() {});
       },
       child: Center(
@@ -208,7 +218,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                         fontWeight: FontWeight.w500,
                         overflow: TextOverflow.ellipsis),
                   ),
-                  SizedBox(height: 15.sp,),
+                  SizedBox(height: 10.sp,),
                   Text(
                       value,
                       style: TextStyle(
@@ -218,7 +228,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                           overflow: TextOverflow.ellipsis),
 
                   ),
-                  SizedBox(height: 1.sp,),
+                  // SizedBox(height: 1.sp,),
                   Text(
                       subtitle ?? "",
                       style: TextStyle(
@@ -226,7 +236,8 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                       overflow: TextOverflow.ellipsis)
                 ],
               ),
-              Image.asset(image!, width: Adaptive.w(10),),
+
+              index==1?Image.network(image!):Image.asset(image!, width: Adaptive.w(10),),
             ],
           ),
         ),

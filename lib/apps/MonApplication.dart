@@ -1,8 +1,10 @@
 import 'package:bbopt_mobile/controllers/AuthenticationController.dart';
 import 'package:bbopt_mobile/controllers/ChampController.dart';
+import 'package:bbopt_mobile/controllers/MeteoController.dart';
 import 'package:bbopt_mobile/controllers/TacheController.dart';
 import 'package:bbopt_mobile/controllers/UserController.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
+import 'package:bbopt_mobile/utils/location_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +29,8 @@ class MonApplication extends StatelessWidget{
             ChangeNotifierProvider(create: (_)=> UserCtrl(stockage: stockage)),
             ChangeNotifierProvider(create: (_)=> ChampController(stockage: stockage)),
             ChangeNotifierProvider(create: (_)=> TacheController(stockage: stockage)),
+            ChangeNotifierProvider(create: (_)=> MeteoController()),
+            ChangeNotifierProvider(create: (_)=> LocationService()),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

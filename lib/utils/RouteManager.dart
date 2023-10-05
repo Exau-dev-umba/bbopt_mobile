@@ -1,4 +1,5 @@
 import 'package:bbopt_mobile/models/ChampModel.dart';
+import 'package:bbopt_mobile/pages/DonneeMeteo.dart';
 import 'package:bbopt_mobile/pages/auth/RegistrationPage.dart';
 import 'package:bbopt_mobile/pages/champs/ChampsPage.dart';
 import 'package:bbopt_mobile/pages/champs/CreateChampsPage.dart';
@@ -22,6 +23,8 @@ class RoutesManager {
         Map<String, dynamic> chooseChamp ={};
         var champData = ChampModel.fromJson(args!);
         return MaterialPageRoute(builder: (_)=> DetailChampsPage(champ: champData));
+      case Routes.donneeMeteo:
+        return MaterialPageRoute(builder: (_)=>Meteo());
       case Routes.createChampRoute:
         return MaterialPageRoute(builder: (_)=> CreateChampsPage());
       case Routes.loginpage:

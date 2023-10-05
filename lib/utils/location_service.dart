@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
-class LocationService {
+class LocationService extends ChangeNotifier {
   Location location = Location();
+  double? latitude;
+  double? longitude;
 
   Future<LocationData?> getLocation() async {
     bool serviceEnabled;
@@ -35,16 +38,18 @@ class LocationService {
 
     return currentLocation;
   }
+  locationService() async{
+    LocationService locationService = LocationService();
+    LocationData? currentLocation = await locationService.getLocation();
 
+    if (currentLocation != null) {
+      latitude = currentLocation.latitude;
+      longitude = currentLocation.longitude;
+      print("DATA LOCALISATION : ${latitude} - ${longitude}");
+    } else {
+      throw Exception('Failed to locate service');
 
-// LocationService locationService = LocationService();
-// LocationData? currentLocation = await locationService.getLocation();
-//
-// if (currentLocation != null) {
-//   double? latitude = currentLocation.latitude;
-//   double? longitude = currentLocation.longitude;
-//   // Faites quelque chose avec les coordonnées de localisation
-// } else {
-//   // Gestion de l'erreur si la localisation n'est pas disponible
-// }
+    }
+  }
+
 }
