@@ -9,7 +9,7 @@ class MeteoController extends ChangeNotifier{
   String iconUrl = '';
   double temperature = 0.0;
 
-  Future<void> getWeatherData({latitude, longitude}) async {
+  Future<double> getWeatherData({latitude, longitude}) async {
     final apiKey = '4b9de1a0093ef466c31131959bc82195';
     // final latitude = 37.7749;
     // final longitude = -122.4194;
@@ -28,6 +28,8 @@ class MeteoController extends ChangeNotifier{
     } else {
       throw Exception('Failed to load weather data');
     }
+
+    return temperature;
   }
 
 

@@ -1,9 +1,12 @@
 
+import 'dart:async';
+
 import 'package:bbopt_mobile/controllers/MeteoController.dart';
 import 'package:bbopt_mobile/controllers/TacheController.dart';
 import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
+import 'package:bbopt_mobile/utils/widget/Chargement.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
@@ -21,10 +24,13 @@ class AccueilPagePage extends StatefulWidget {
 }
 
 class _AccueilPagePageState extends State<AccueilPagePage> {
+  StreamController<void> _updateController = StreamController<void>();
+  late Timer _timer;
+  var isVisible=false;
+  var tempF= 0.0;
   @override
   void initState() {
     super.initState();
-    setState(() {});
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var champCtrl = context.read<ChampController>();
       var tacheCtrl = context.read<TacheController>();
@@ -32,13 +38,43 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
       var meteo = context.read<MeteoController>();
       var location = context.read<LocationService>();
       location.locationService();
-      meteo.getWeatherData(latitude: location.latitude, longitude: location.longitude);
+      meteo.getWeatherData(latitude: "-4.44193110", longitude: "15.26629310");
       userCtrl.recuperDataAPI();
       champCtrl.recuperNbreChampsAPI();
       champCtrl.recuperChampAPI();
       tacheCtrl.recuperNbreTacheAPI();
       tacheCtrl.recuperTachesAPI();
     });
+
+    _timer = Timer(Duration(seconds: 1), () {
+      var meteo = context.read<MeteoController>();
+      meteo.getWeatherData(latitude: "-4.44193110", longitude: "15.26629310").then((value) => {
+        tempF = value,
+        debugPrint("TEMPERATURE : ${value.toStringAsFixed(0)}")
+      });
+    });
+    _updateController.stream.listen((event) {
+      var champCtrl = context.read<ChampController>();
+      var tacheCtrl = context.read<TacheController>();
+      var userCtrl = context.read<UserCtrl>();
+      var meteo = context.read<MeteoController>();
+      var location = context.read<LocationService>();
+      location.locationService();
+      meteo.getWeatherData(latitude: "-4.44193110", longitude: "15.26629310");
+      userCtrl.recuperDataAPI();
+      champCtrl.recuperNbreChampsAPI();
+      champCtrl.recuperChampAPI();
+      tacheCtrl.recuperNbreTacheAPI();
+      tacheCtrl.recuperTachesAPI();
+    });
+
+    @override
+    void dispose() {
+      _timer.cancel();
+      _updateController.close();
+
+      super.dispose();
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -167,8 +203,8 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
           ),
           carteAffiche(
               "Météo Locale",
-              "${meteo.temperature.toStringAsFixed(1)}°C",
-              image: "${meteo.iconUrl!=''?meteo.iconUrl:"assets/images/cloudy_1163657.png"}", "",1),
+              "${meteo.temperature.toStringAsFixed(0)}°C",
+              image: "${meteo.iconUrl!=''?meteo.iconUrl:"https://icones.pro/wp-content/uploads/2021/07/icone-meteo-verte.png"}", "",1),
           carteAffiche("Humidité", "20%", image: "assets/images/humidity (1).png", "",2),
           carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "${champCtrl.nbrChamp?? '0'} culture(s) en croissance", Routes.champRoute,3),
           carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", image: "assets/images/target.png", Routes.taskRoute,4),
@@ -178,6 +214,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
   }
   
   carteAffiche(String title, String value, String routeName, int index, {String? image,String? subtitle})  {
+    var meteo = context.watch<MeteoController>();
     return InkWell(
       onTap: (){
         routeName==""?null:Navigator.pushNamed(context, routeName);
@@ -237,7 +274,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                 ],
               ),
 
-              index==1?Image.network(image!):Image.asset(image!, width: Adaptive.w(10),),
+              index==1?Image.network(image!, width: meteo.iconUrl!=null?null:Adaptive.w(10),):Image.asset(image!, width: Adaptive.w(10),),
             ],
           ),
         ),
