@@ -69,7 +69,7 @@ class _ProfilPageState extends State<ProfilPage> {
           ),
           ListTile(
             leading: Icon(Icons.call, color: Constantes.Colorwhite,),
-            title: Text('${userCtrl.user?.phone==null? 'Non défini':userCtrl.user?.phone}', style: TextStyle(color: Constantes.Colorwhite),),
+            title: Text('${userCtrl.user?.phone==null? '+ XXX XXX XXX XXX':userCtrl.user?.phone}', style: TextStyle(color: Constantes.Colorwhite),),
             onTap: () => null,
           ),
           ListTile(

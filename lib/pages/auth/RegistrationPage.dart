@@ -191,8 +191,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
       };
       authCtrl.register(data);
       isVisible =false;
+      print("DATA USER REGISTER : ${data}");
       //Naigate to home page
-      Navigator.popAndPushNamed(context, Routes.homeRoute);
+      // Navigator.popAndPushNamed(context, Routes.homeRoute);
     }
   }
 

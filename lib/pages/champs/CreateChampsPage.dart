@@ -275,6 +275,7 @@ class _CreateChampsPageState extends State<CreateChampsPage> {
             print("DATA A ENVOYER : ${formData}");
             // print("DATA TAPER : ${culturesList}");
             champCtrl.createChampAPI(formData);
+            setState(() {});
             Navigator.pop(context);
             setState(() {});
           }

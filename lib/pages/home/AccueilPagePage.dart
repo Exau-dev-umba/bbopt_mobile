@@ -6,7 +6,6 @@ import 'package:bbopt_mobile/controllers/TacheController.dart';
 import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
-import 'package:bbopt_mobile/utils/widget/Chargement.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
@@ -28,6 +27,8 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
   late Timer _timer;
   var isVisible=false;
   var tempF= 0.0;
+  var humidity= 0;
+  String desc= '';
   @override
   void initState() {
     super.initState();
@@ -44,28 +45,31 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
       champCtrl.recuperChampAPI();
       tacheCtrl.recuperNbreTacheAPI();
       tacheCtrl.recuperTachesAPI();
+      champCtrl.recuperNbrCulture();
     });
 
-    _timer = Timer(Duration(seconds: 1), () {
-      var meteo = context.read<MeteoController>();
-      meteo.getWeatherData(latitude: "-4.44193110", longitude: "15.26629310").then((value) => {
-        tempF = value,
-        debugPrint("TEMPERATURE : ${value.toStringAsFixed(0)}")
+    _timer = Timer.periodic((Duration(seconds: 1)), (timer) {
+      setState(() {
+        var champCtrl = context.read<ChampController>();
+        var meteo = context.read<MeteoController>();
+        meteo.getWeatherData(latitude: "-4.44193110", longitude: "15.26629310").then((value) => {
+          tempF = value,
+          debugPrint("TEMPERATURE : ${value.toStringAsFixed(0)}")
+        });
+        champCtrl.recuperNbrCulture().then((value) => {
+          debugPrint("DATA CULTURE : ${value}")
+        });
+        desc = meteo.description;
+        var tacheCtrl = context.read<TacheController>();
+        var userCtrl = context.read<UserCtrl>();
+        var location = context.read<LocationService>();
+        location.locationService();
+        userCtrl.recuperDataAPI();
+        champCtrl.recuperNbreChampsAPI();
+        champCtrl.recuperChampAPI();
+        tacheCtrl.recuperNbreTacheAPI();
+        tacheCtrl.recuperTachesAPI();
       });
-    });
-    _updateController.stream.listen((event) {
-      var champCtrl = context.read<ChampController>();
-      var tacheCtrl = context.read<TacheController>();
-      var userCtrl = context.read<UserCtrl>();
-      var meteo = context.read<MeteoController>();
-      var location = context.read<LocationService>();
-      location.locationService();
-      meteo.getWeatherData(latitude: "-4.44193110", longitude: "15.26629310");
-      userCtrl.recuperDataAPI();
-      champCtrl.recuperNbreChampsAPI();
-      champCtrl.recuperChampAPI();
-      tacheCtrl.recuperNbreTacheAPI();
-      tacheCtrl.recuperTachesAPI();
     });
 
     @override
@@ -204,9 +208,9 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
           carteAffiche(
               "Météo Locale",
               "${meteo.temperature.toStringAsFixed(0)}°C",
-              image: "${meteo.iconUrl!=''?meteo.iconUrl:"https://icones.pro/wp-content/uploads/2021/07/icone-meteo-verte.png"}", "",1),
-          carteAffiche("Humidité", "20%", image: "assets/images/humidity (1).png", "",2),
-          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "${champCtrl.nbrChamp?? '0'} culture(s) en croissance", Routes.champRoute,3),
+              image: "${meteo.iconUrl!=''?meteo.iconUrl:"https://icones.pro/wp-content/uploads/2021/07/icone-meteo-verte.png"}", "",1, subtitle: "${meteo.description}"),
+          carteAffiche("Humidité", "${meteo.humidite} %", image: "assets/images/humidity (1).png", "",2, subtitle: "${meteo.ville}"),
+          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "${champCtrl.nbrCulture?? '0'} culture(s) en croissance", Routes.champRoute,3),
           carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", image: "assets/images/target.png", Routes.taskRoute,4),
         ],
       ),
@@ -217,6 +221,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
     var meteo = context.watch<MeteoController>();
     return InkWell(
       onTap: (){
+        setState(() {});
         routeName==""?null:Navigator.pushNamed(context, routeName);
         setState(() {});
       },

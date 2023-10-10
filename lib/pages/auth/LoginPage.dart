@@ -2,6 +2,7 @@ import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:bbopt_mobile/utils/widget/Chargement.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../controllers/AuthenticationController.dart';
 import '../../utils/Message.dart';
@@ -158,7 +159,6 @@ class _LoginPageState extends State<LoginPage> {
       isVisible = false;
       setState(() {});
       if (res.status) {
-        await Future.delayed(Duration(seconds: 1));
         setState(() {});
         Navigator.popAndPushNamed(context, Routes.homeRoute);
       } else {
@@ -231,80 +231,82 @@ class _LoginPageState extends State<LoginPage> {
                 child: Container(
                   color: Colors.black54.withOpacity(0.6),
                   padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // The email text field widget
-                      Text('Connectez-vous',
-                      style: TextStyle(
-                        color: Constantes.Colorwhite,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold
-                      ),),
-                      SizedBox(height: 25.0,),
-                      TextFormField(
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          labelStyle: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 20
-                          ),
-                          fillColor: Constantes.Colorwhite,
-                          focusColor: Constantes.Colorwhite,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.white70
-                            )
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Colors.white70),
-                          ),
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Icon(
-                                  Icons.mail,
-                                  color: Constantes.Colorwhite
-                              ),
-                            )
-                        ),
-                        validator: validateEmail,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // The email text field widget
+                        Text('Connectez-vous',
                         style: TextStyle(
                           color: Constantes.Colorwhite,
-                          fontSize: 20,
-                        ),
-                        cursorColor: Constantes.Colorwhite,
-                      ),
-                      SizedBox(height: 15.0),
-                      // The password text field widget
-                      PasswordField(
-                        restorationId: 'password_field',
-                        passwordController: passwordController,
-                        labelText: 'Mot de passe',
-                      ),
-                      SizedBox(height: 15.0),
-                      // The login button widget
-                      ElevatedButton(
-                        onPressed: login,
-                        child: Text('Se connecter'),
-
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Constantes.ColorvertCitron ),
-                        ),
-                      ),
-                      SizedBox(height: 30.0,),
-                      TextButton(onPressed: (() => Navigator.popAndPushNamed(context, Routes.registrationpage)),
-                          child: Text(
-                          'Vous n\'avez pas de compte ?',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontStyle: FontStyle.italic,
-
+                          fontSize: 25.sp,
+                          fontWeight: FontWeight.bold
+                        ),),
+                        SizedBox(height: 25.0.sp,),
+                        TextFormField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            labelText: 'Username',
+                            labelStyle: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 20.sp
+                            ),
+                            fillColor: Constantes.Colorwhite,
+                            focusColor: Constantes.Colorwhite,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white70
+                              )
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Colors.white70),
+                            ),
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Icon(
+                                    Icons.mail,
+                                    color: Constantes.Colorwhite
+                                ),
+                              )
                           ),
-                        )
-                      ),
-                    ],
+                          validator: validateEmail,
+                          style: TextStyle(
+                            color: Constantes.Colorwhite,
+                            fontSize: 20,
+                          ),
+                          cursorColor: Constantes.Colorwhite,
+                        ),
+                        SizedBox(height: 15.0.sp),
+                        // The password text field widget
+                        PasswordField(
+                          restorationId: 'password_field',
+                          passwordController: passwordController,
+                          labelText: 'Mot de passe',
+                        ),
+                        SizedBox(height: 15.0.sp),
+                        // The login button widget
+                        ElevatedButton(
+                          onPressed: login,
+                          child: Text('Se connecter'),
+
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith((states) => Constantes.ColorvertFonce ),
+                          ),
+                        ),
+                        SizedBox(height: 10.0.sp,),
+                        TextButton(onPressed: (() => Navigator.popAndPushNamed(context, Routes.registrationpage)),
+                            child: Text(
+                            'Vous n\'avez pas de compte ?',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontStyle: FontStyle.italic,
+
+                            ),
+                          )
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

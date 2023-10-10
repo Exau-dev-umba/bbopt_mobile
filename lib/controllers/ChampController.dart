@@ -9,6 +9,7 @@ import '../utils/StockageKeys.dart';
 class ChampController extends ChangeNotifier{
   List<ChampModel>? champ;
   int? nbrChamp;
+  int? nbrCulture;
   GetStorage? stockage;
   bool loading = false;
   ChampController({this.stockage});
@@ -28,6 +29,21 @@ class ChampController extends ChangeNotifier{
     }
     loading = false;
     notifyListeners();
+  }
+
+  Future<int?> recuperNbrCulture() async {
+    var token=stockage?.read(StockageKeys.token) ;
+    var url =Endpoints.culturesCount;
+    loading = true;
+    notifyListeners();
+    var reponse = await getData(url, token: token);
+    if(reponse!=null){
+      nbrCulture= reponse['count'];
+      notifyListeners();
+    }
+    loading = false;
+    notifyListeners();
+    return nbrCulture;
   }
 
   void recuperSingleChampAPI(id) async {

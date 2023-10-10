@@ -85,7 +85,7 @@ class DetailChampsPage extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all(Constantes.ColorvertFonce)
               ),
               // color: Color.fromRGBO(58, 66, 86, 1.0),
-              child: Text("+ DATE DE PLANATATION DES CULTURES",
+              child: Text("+ DATE DE PLANTATION DES CULTURES",
                   style: TextStyle(color: Colors.white)),
             )),
       ],
@@ -113,22 +113,31 @@ class DetailChampsPage extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         SizedBox(height: 20.0.sp),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text("Culture(s) :".toUpperCase(),style: TextStyle(color: Colors.white)),
-            // Expanded(flex: 1, child: Text("Culture(s) :")),
-            Expanded(
-                flex: 6,
-                child: Padding(
-                    padding: EdgeInsets.only(left: 10.0.sp),
-                    child: Row(
-                      children: champ.cultures!.map((e) {
-                        return Text("${e} ",style: TextStyle(color: Colors.white), overflow: TextOverflow.ellipsis,);
-                      }).toList(),
-                    ))),
-            // Expanded(flex: 1, child: coursePrice)
-          ],
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text("Culture(s) :".toUpperCase(),style: TextStyle(color: Colors.white)),
+              // Expanded(flex: 1, child: Text("Culture(s) :")),
+              Expanded(
+                  flex: 6,
+                  child: Row(
+                    children: champ.cultures!.map((e) {
+                      return TextButton(
+                        onPressed: (){
+
+                        },
+                          style: ButtonStyle(
+                            side: MaterialStateProperty.all(BorderSide(width: 5.sp, )),
+                            backgroundColor: MaterialStateProperty.all(Constantes.ColorvertFonce)
+                          ),
+                        child: Text("${e}",style: TextStyle(color: Colors.white), overflow: TextOverflow.ellipsis,));
+
+                    }).toList(),
+                  )),
+              // Expanded(flex: 1, child: coursePrice)
+            ],
+          ),
         ),
       ],
     );
