@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:bbopt_mobile/utils/widget/Chargement.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +52,17 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
     registerForRestoration(_obscureText, 'obscure_text');
   }
 
+  // A method to validate the password input
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters long';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -57,7 +70,7 @@ class _PasswordFieldState extends State<PasswordField> with RestorationMixin {
       restorationId: 'password_text_field',
       controller: widget.passwordController,
       obscureText: _obscureText.value,
-      validator: widget.validator,
+      validator: validatePassword,
       decoration: InputDecoration(
         filled: true,
         hintText: widget.hintText,
@@ -115,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
   // A method to validate the email input
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your email';
+      return 'Please enter your email or username';
     }
     // if (!value.contains('@')) {
     //   return 'Please enter a valid email';
@@ -246,7 +259,11 @@ class _LoginPageState extends State<LoginPage> {
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
-                            labelText: 'Username',
+                            labelText: 'identifiant',
+                            hintStyle: TextStyle(
+                              color: Constantes.Colorwhite
+                            ),
+                            hintText: "username ou email",
                             labelStyle: TextStyle(
                               color: Colors.white70,
                               fontSize: 20.sp

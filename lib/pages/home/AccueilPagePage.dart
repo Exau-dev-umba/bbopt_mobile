@@ -50,19 +50,22 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
 
     _timer = Timer.periodic((Duration(seconds: 1)), (timer) {
       setState(() {
-        var champCtrl = context.read<ChampController>();
         var meteo = context.read<MeteoController>();
         meteo.getWeatherData(latitude: "-4.44193110", longitude: "15.26629310").then((value) => {
           tempF = value,
           debugPrint("TEMPERATURE : ${value.toStringAsFixed(0)}")
         });
-        champCtrl.recuperNbrCulture().then((value) => {
-          debugPrint("DATA CULTURE : ${value}")
-        });
-        desc = meteo.description;
+      });
+    });
+    _timer = Timer.periodic(Duration(seconds: 10), (timer) {
+      setState(() {
+        var champCtrl = context.read<ChampController>();
         var tacheCtrl = context.read<TacheController>();
         var userCtrl = context.read<UserCtrl>();
         var location = context.read<LocationService>();
+        champCtrl.recuperNbrCulture().then((value) => {
+          debugPrint("DATA CULTURE : ${value}")
+        });
         location.locationService();
         userCtrl.recuperDataAPI();
         champCtrl.recuperNbreChampsAPI();
