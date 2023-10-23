@@ -39,15 +39,21 @@ class _ChampsPageState extends State<ChampsPage> {
   }
 
   Widget _body(){
+    var champCtrl = context.watch<ChampController>();
     return Center(
       child: Stack(
         children: [
-          tableau()
+          champCtrl.champ!.isNotEmpty? tableau(): _noDatat()
         ],
       ),
     );
   }
 
+  Widget _noDatat(){
+    return Center(
+      child: Text("Vous avez pas des champs"),
+    );
+  }
   Widget tableau(){
     var champCtrl = context.watch<ChampController>();
     return Padding(
@@ -104,7 +110,7 @@ class _ChampsPageState extends State<ChampsPage> {
                       )
                   ),
                 ],
-                rows: champCtrl.champ!.isNotEmpty? champCtrl.champ!.map((e) =>DataRow(
+                rows: champCtrl.champ!.map((e) =>DataRow(
                     cells: <DataCell>[
                       DataCell(Text("${e.nom}"),
                           onTap: (){
@@ -115,13 +121,7 @@ class _ChampsPageState extends State<ChampsPage> {
                       DataCell(Text("${e.cultures?.map((e) => e)}")),
                       DataCell(Text("En cours")),
                     ]
-                ),).toList(): [
-                  DataRow(cells: [
-                    DataCell(
-                      Text("Aucune donnée trouvé")
-                    )
-                  ])
-                ],
+                ),).toList(),
             ),
           ),
         ],
