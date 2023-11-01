@@ -37,7 +37,6 @@ class _CommunautePageState extends State<CommunautePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       drawer: ProfilPage(),
       appBar: AppBar(
         title: Text('LA COMMUNAUTE', style: TextStyle(color: Constantes.Colorjaune),),
@@ -65,7 +64,7 @@ class _CommunautePageState extends State<CommunautePage> {
           ),
         ],*/
       ),
-      body: webViewDiagnostiquer()//_body()
+      body: _body()
     );
   }
 

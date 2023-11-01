@@ -1,3 +1,4 @@
+import 'package:bbopt_mobile/controllers/AnalysePlanteController.dart';
 import 'package:bbopt_mobile/controllers/AuthenticationController.dart';
 import 'package:bbopt_mobile/controllers/ChampController.dart';
 import 'package:bbopt_mobile/controllers/MeteoController.dart';
@@ -29,6 +30,7 @@ class MonApplication extends StatelessWidget{
             ChangeNotifierProvider(create: (_)=> UserCtrl(stockage: stockage)),
             ChangeNotifierProvider(create: (_)=> ChampController(stockage: stockage)),
             ChangeNotifierProvider(create: (_)=> TacheController(stockage: stockage)),
+            ChangeNotifierProvider(create: (_)=> AnalysePlanteController(stockage: stockage)),
             ChangeNotifierProvider(create: (_)=> MeteoController()),
             ChangeNotifierProvider(create: (_)=> LocationService()),
           ],

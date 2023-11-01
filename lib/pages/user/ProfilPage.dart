@@ -107,7 +107,7 @@ class _ProfilPageState extends State<ProfilPage> {
           ListTile(
             leading: Icon(Icons.settings, color: Constantes.Colorwhite,),
             title: Text('Paramètres', style: TextStyle(color: Constantes.Colorwhite),),
-            onTap: () => null,
+            onTap: () => Navigator.pushNamed(context, Routes.diagnostqiue),
           ),
           ListTile(
             leading: Icon(Icons.help, color: Constantes.Colorwhite,),

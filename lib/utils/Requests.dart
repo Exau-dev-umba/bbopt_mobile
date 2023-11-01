@@ -104,6 +104,37 @@ Future<HttpResponse> postData(String api_url, Map data, {String? token}) async {
   }
 }
 
+Future<HttpResponse> postDataCulture(String api_url, Map data, {String? token}) async {
+  try {
+    var url = Uri.parse("${Constantes.DIAGNOSTIC_URL}$api_url");
+    print(url);
+    String dataStr = json.encode(data);
+    var _tkn = token ?? storage.read(StockageKeys.token);
+    var response = await http.post(url, body: dataStr, headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $_tkn"
+    }).timeout(Duration(seconds: 1));
+    print(response.body);
+    if(!kReleaseMode){
+      // alice.onHttpResponse(response);
+    }
+
+    var successList = [200, 201];
+    var msg = json.decode(response.body);
+    var st = successList.contains(response.statusCode);
+    if (response.statusCode == 500) throw Exception(msg);
+    return HttpResponse(status: st, data: msg); // {"status": st, "msg": msg};
+
+  } catch (e, trace) {
+    printWrapped(e.toString());
+    printWrapped(trace.toString());
+
+    return HttpResponse(
+        status: false,
+        errorMsg: "Erreur inattendue, Problème de connexion",
+        isException: true); // {"status": st, "msg": msg};
+  }
+}
 
 
 

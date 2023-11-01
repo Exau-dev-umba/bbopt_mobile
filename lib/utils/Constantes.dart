@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
 
 import '../models/MessageModel.dart';
-import 'location_service.dart';
 
 class Constantes{
   static const Color ColorvertFonce = Color.fromRGBO(35, 110, 72, 1);
@@ -18,6 +16,7 @@ class Constantes{
 
   static const String  BASE_URL = "https://bbopt.net";
   static const String  WEBVIEW_URL = "http://13.51.242.50:8081";
+  static const String  DIAGNOSTIC_URL = "http://3.219.168.121:9000/api/diagnostics/";
 
 
   static List<MessageModel> messages = [
