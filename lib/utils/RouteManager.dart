@@ -11,7 +11,7 @@ import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:bbopt_mobile/pages/tasks/TasksPage.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/stat/Diagnostique.dart';
+import '../pages/analyse/Diagnostique.dart';
 
 class RoutesManager {
   static Route? route(RouteSettings r) {

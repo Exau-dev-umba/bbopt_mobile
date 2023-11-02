@@ -190,6 +190,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         "country":pays
       };
       authCtrl.register(data);
+      Navigator.pushNamed(context, Routes.homeRoute);
       isVisible =false;
       print("DATA USER REGISTER : ${data}");
       //Naigate to home page

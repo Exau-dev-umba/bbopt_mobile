@@ -1,13 +1,11 @@
 import 'package:bbopt_mobile/pages/avis/AvisPage.dart';
-import 'package:bbopt_mobile/pages/calendrier/CalendrierPage.dart';
 import 'package:bbopt_mobile/pages/communaute/CommunautePage.dart';
-import 'package:bbopt_mobile/pages/diagnostique/DiagnostiquePage.dart';
 import 'package:bbopt_mobile/pages/discuter/DiscuterPage.dart';
 import 'package:bbopt_mobile/pages/home/AccueilPagePage.dart';
-import 'package:bbopt_mobile/pages/stat/StatPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../analyse/AnalysePage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,10 +18,9 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final pages= [
     AccueilPagePage(),
-    // DiagnostiquePage(),
-    StatPage(),
-    AvisPage(),
-    CommunautePage()
+    AnalysePage(),
+    CommunautePage(),
+    DiscuterPage(),
   ];
 
   @override
@@ -56,16 +53,16 @@ class _HomePageState extends State<HomePage> {
         //   label:'DIAGNOSTIQUER'
         // ),
         BottomNavigationBarItem(
-            icon: Image.asset('assets/nav/trend.png', width: _currentIndex==1? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==1?Constantes.Colorjaune:Constantes.Colorwhite),
-            label:'STATISTIQUE'
+            icon: Image.asset('assets/nav/photo-camera.png', width: _currentIndex==1? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==1?Constantes.Colorjaune:Constantes.Colorwhite),
+            label:'ANALYSE'
         ),
         BottomNavigationBarItem(
-            icon: Image.asset('assets/nav/message.png', width: _currentIndex==2? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==2?Constantes.Colorjaune:Constantes.Colorwhite),
-            label:'LES AVIS'
+            icon: Image.asset('assets/nav/group.png', width: _currentIndex==2? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==2?Constantes.Colorjaune:Constantes.Colorwhite),
+            label:'COMMUNAUTE'
         ),
         BottomNavigationBarItem(
-            icon: Image.asset('assets/nav/group.png', width: _currentIndex==3? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==3?Constantes.Colorjaune:Constantes.Colorwhite),
-            label:'LA COMMUNAUTE'
+            icon: Image.asset('assets/nav/chat.png', width: _currentIndex==3? Adaptive.w(8):Adaptive.w(7), color:_currentIndex==3?Constantes.Colorjaune:Constantes.Colorwhite),
+            label:'MESSAGE'
         ),
       ],
       onTap: (int index) {
