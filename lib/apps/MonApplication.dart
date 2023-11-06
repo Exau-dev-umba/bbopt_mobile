@@ -1,6 +1,7 @@
 import 'package:bbopt_mobile/controllers/AnalysePlanteController.dart';
 import 'package:bbopt_mobile/controllers/AuthenticationController.dart';
 import 'package:bbopt_mobile/controllers/ChampController.dart';
+import 'package:bbopt_mobile/controllers/CommunauteController.dart';
 import 'package:bbopt_mobile/controllers/MeteoController.dart';
 import 'package:bbopt_mobile/controllers/TacheController.dart';
 import 'package:bbopt_mobile/controllers/UserController.dart';
@@ -13,8 +14,11 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter/services.dart';
 import '../utils/RouteManager.dart';
 
+// ignore: must_be_immutable
 class MonApplication extends StatelessWidget{
   GetStorage stockage =GetStorage();
+
+  MonApplication({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +37,7 @@ class MonApplication extends StatelessWidget{
             ChangeNotifierProvider(create: (_)=> AnalysePlanteController(stockage: stockage)),
             ChangeNotifierProvider(create: (_)=> MeteoController()),
             ChangeNotifierProvider(create: (_)=> LocationService()),
+            ChangeNotifierProvider(create: (_)=> CommunauteController()),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

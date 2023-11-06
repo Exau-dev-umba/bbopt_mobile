@@ -50,6 +50,8 @@ dependencies:
   location: ^5.0.3
   loading_animation_widget: ^1.2.0+4
   tbib_splash_screen: ^1.0.0
+  chat_gpt_api: ^2.0.0
+  readmore: ^2.2.0
 
 dev_dependencies:
   flutter_test:
