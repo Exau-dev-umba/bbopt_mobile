@@ -53,12 +53,6 @@ class AnalysePlanteController extends ChangeNotifier{
 
       data = response.body;
 
-/*    // Ajouter l'image en tant que partie de formulaire multipart
-    request.files.add(await http.MultipartFile.fromPath('image', imageFile!.path));
-
-    // Envoyer la requête
-    var response = await request.send();*/
-
       // Vérifier le code de statut de la réponse
       if (response.statusCode == 200) {
         print('Image envoyée avec succès');
