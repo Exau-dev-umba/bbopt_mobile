@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bbopt_mobile/pages/user/ProfilPage.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
+import 'package:bbopt_mobile/utils/widget/Chargement.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
@@ -22,6 +23,25 @@ class AnalysePage extends StatefulWidget {
 class _AnalysePageState extends State<AnalysePage> {
   final _picker = ImagePicker();
   File? selectedImage;
+  String plants="";
+  var data;
+  bool _isLoading = false;
+
+  Future<void> _loadingAnalyse() async {
+    var diagnostique = context.read<AnalysePlanteController>();
+    setState(() {
+      _isLoading = true;
+    });
+    await diagnostique.sendImageToApi(imageFile: selectedImage, plant: plants);
+
+    // await Future.delayed(Duration(seconds: 3));
+
+    setState(() {
+      data = diagnostique.data['info'];
+      _isLoading = false;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +82,11 @@ class _AnalysePageState extends State<AnalysePage> {
     );
   }
   ouvrirDialog(ctx, {required String plant}) async {
-    var diagnostique = context.read<AnalysePlanteController>();
     bool? resulat = await showDialog<bool>(
       context: ctx,
       builder: (BuildContext context) {
         return AlertDialog(
-            title: Center(child: Text('Source d\'image')),
+            title: Center(child: Text('Ajouter une image')),
             content: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -79,14 +98,8 @@ class _AnalysePageState extends State<AnalysePage> {
                   ),
                   onPressed: () {
                     getImageCamera();
-
-                    diagnostique.sendImageToApi(imageFile: selectedImage, plant: "$plant");
-                    setState(() {
-                      diagnostique.data;
-                    });
-
+                    plants = plant;
                     Navigator.pop(context);
-                    print("RESULTAT CAMERA: ${diagnostique.data}");
                   },
                 ),
                 IconButton(
@@ -97,14 +110,8 @@ class _AnalysePageState extends State<AnalysePage> {
                   ),
                   onPressed: () {
                     getImageGallery();
+                    plants = plant;
                     Navigator.pop(context);
-                    /*diagnostique.sendImageToApi(imageFile: selectedImage, plant: "$plant");
-                    setState(() {
-                      diagnostique.data;
-                    });*/
-                    // Navigator.pushNamed(context, Routes.resultatAnalyse, arguments: selectedImage);
-
-                    // print("RESULTAT GALLERY: ${diagnostique.data}");
                   },
                 ),
               ],
@@ -119,7 +126,6 @@ class _AnalysePageState extends State<AnalysePage> {
   }
 
   Widget _body(BuildContext context) {
-    var diagnostique = context.read<AnalysePlanteController>();
     return Stack(
       children: [
         Container(
@@ -150,7 +156,7 @@ class _AnalysePageState extends State<AnalysePage> {
             ),
             _carte(
               context,
-              title: selectedImage==null? "Découvrez notre système d'analyse de plante": "Résultat de l'analyse",
+              title: selectedImage==null? "Découvrez notre système d'analyse de plante": "Analyse de la plante",
               sizeTitle: 18.sp,
               boldTitle: FontWeight.w500,
               sizeCarte: 40.h,
@@ -179,25 +185,71 @@ class _AnalysePageState extends State<AnalysePage> {
                       "Cliquez sur les noms des cultures ci-dessus",
                       style: TextStyle(),
                     ),
+
                   ],
-                ): Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.file(selectedImage!, height: 50.sp),
-                    Spacer(),
-                    Text(
-                      "RESULTAT",
-                      style: TextStyle(
-                        color: Constantes.ColorvertFonce,
-                        fontWeight: FontWeight.bold,
+                ): Container(
+                  // color: Constantes.Colorjaune,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.file(selectedImage!, height: 50.sp),
+                          SizedBox(width: Adaptive.w(5),),
+                          SizedBox(
+                            width: Adaptive.w(40),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Appuyez sur le bouton ci-dessous pour analyser la photo de la plante.",
+                                  ),
+                                ),
+                                ElevatedButton(
+                                    onPressed: (){
+                                      data = '';
+                                      _loadingAnalyse();
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(Constantes.ColorvertFonce)
+                                    ),
+                                    child: Text("Analyser")
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Spacer(),
-                    Text(
-                      "${diagnostique.data}",
-                      style: TextStyle(),
-                    ),
-                  ],
+                      SizedBox(height: 2.h,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Résultat : "),
+                          Flexible(
+                            child: Text("${data ?? ''}", style: TextStyle(
+                              fontWeight: FontWeight.w600
+                            ),),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 1.h,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Description : "),
+                          Flexible(
+                            child: Text("${''}", style: TextStyle(
+                                fontWeight: FontWeight.w500
+                            ),),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               image: 'assets/images/cornfield.jpgg',
@@ -206,6 +258,8 @@ class _AnalysePageState extends State<AnalysePage> {
             ),
           ]),
         ),
+        // _isLoading ? CircularProgressIndicator() : Text('En cliquer'),
+       Chargement(_isLoading)
       ],
     );
   }
@@ -239,9 +293,10 @@ class _AnalysePageState extends State<AnalysePage> {
         padding: const EdgeInsets.all(15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "$title",
+              title,
               style: TextStyle(
                   color: colortext, fontSize: sizeTitle, fontWeight: boldTitle),
             ),
@@ -282,6 +337,7 @@ class _AnalysePageState extends State<AnalysePage> {
 
     setState(() {
       if (pickedImage != null) {
+        data='';
         selectedImage = File(pickedImage.path);
       } else {
         print("Aucune image sélectionnée.");
@@ -294,58 +350,12 @@ class _AnalysePageState extends State<AnalysePage> {
 
     setState(() {
       if (pickedImage != null) {
+        data='';
         selectedImage = File(pickedImage.path);
       } else {
         print("Aucune image sélectionnée.");
       }
     });
-  }
-
-  resultatDialog(context) async {
-    bool? resulat = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Center(child: Text('Résultat de l\'analyse')),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              selectedImage != null
-                  ? Container(
-                      child: Image.file(
-                      selectedImage!,
-                      height: 20.h,
-                      fit: BoxFit.cover,
-                    ))
-                  : Icon(
-                      Icons.add_a_photo,
-                      size: 20.sp,
-                      color: Colors.grey,
-                    ),
-              SizedBox(height: 16.0.sp),
-              ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Constantes.ColorvertFonce)),
-                onPressed: () {
-                  // String postText = _textEditingController.text;
-                  Navigator.pop(context);
-                  selectedImage = null;
-                  setState(() {});
-                },
-                child: Text("Publier"),
-              )
-            ],
-          ),
-        );
-      },
-    );
-
-    // if (resulat != null) {
-    //   var message = !resulat ? "Déconnexion annulée" : "Déconnexion";
-    //   showSnackBar(context, message);
-    // }
   }
 
   Widget button(
@@ -362,41 +372,5 @@ class _AnalysePageState extends State<AnalysePage> {
       ),
       onTap: onPressed as void Function()?,
     );
-  }
-
-  _carteGrand(String title, String image, Color background, Color colortext,
-      {Function? onTap}) {
-    return InkWell(
-        child: Container(
-          width: Adaptive.w(500),
-          height: 30.h,
-          margin: EdgeInsets.all(15),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              image: DecorationImage(image: AssetImage(image))),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Flexible(
-                child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Constantes.ColorvertFonce,
-                    ),
-                    alignment: Alignment.center,
-                    width: double.infinity,
-                    height: 60,
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                          color: colortext,
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w300),
-                    )),
-              ),
-            ],
-          ),
-        ),
-        onTap: onTap!());
   }
 }

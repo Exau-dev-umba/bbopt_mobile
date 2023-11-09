@@ -11,8 +11,6 @@ import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:bbopt_mobile/pages/tasks/TasksPage.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/analyse/Diagnostique.dart';
-
 class RoutesManager {
   static Route? route(RouteSettings r) {
     switch (r.name) {
@@ -36,8 +34,6 @@ class RoutesManager {
         return MaterialPageRoute(builder: (_) => RegistrationPage());
       case Routes.taskRoute:
         return MaterialPageRoute(builder: (_) => TasksPage());
-      case Routes.diagnostqiue:
-        return MaterialPageRoute(builder: (_)=> Diagnostique());
       default:
         return MaterialPageRoute(builder: (_)=> HomePage());
     }

@@ -3,7 +3,6 @@ import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -107,7 +106,7 @@ class _ProfilPageState extends State<ProfilPage> {
           ListTile(
             leading: Icon(Icons.settings, color: Constantes.Colorwhite,),
             title: Text('Paramètres', style: TextStyle(color: Constantes.Colorwhite),),
-            onTap: () => Navigator.pushNamed(context, Routes.diagnostqiue),
+            onTap: () => null,
           ),
           ListTile(
             leading: Icon(Icons.help, color: Constantes.Colorwhite,),

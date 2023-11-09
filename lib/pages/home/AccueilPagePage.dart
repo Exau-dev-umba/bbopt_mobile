@@ -113,12 +113,6 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                   badgeColor: Constantes.Colorwhite,
                 ),
               ),
-
-              IconButton(
-                padding: EdgeInsets.only(right: 5),
-                icon: Icon(CupertinoIcons.chat_bubble),
-                onPressed: (){},
-              )
             ],
           ),
         ],

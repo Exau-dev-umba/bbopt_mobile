@@ -1,8 +1,8 @@
 class Routes {
   static const String splashscreen = "splash";
   static const String discuterRoute = "discuter";
-  static const String diagnostqiue = "diagnostqiue";
   static const String donneeMeteo = "donneeMeteo";
+  static const String notification = "notification";
   static const String homeRoute = "homePage";
   static const String champRoute = "VoirChamp";
   static const String singleChampRoute = "SingleChamp";

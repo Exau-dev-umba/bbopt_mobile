@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:bbopt_mobile/utils/Constantes.dart';
@@ -9,7 +10,7 @@ import '../utils/Requests.dart';
 
 class AnalysePlanteController extends ChangeNotifier{
   GetStorage? stockage;
-  String? data;
+  var data;
   bool loading = false;
   AnalysePlanteController({this.stockage});
 
@@ -27,7 +28,7 @@ class AnalysePlanteController extends ChangeNotifier{
   }
 
   // Méthode pour envoyer l'image à l'API REST
-  void sendImageToApi({File? imageFile, plant}) async {
+  Future sendImageToApi({File? imageFile, plant}) async {
     try{
       var request = http.MultipartRequest(
         'POST',
@@ -45,13 +46,13 @@ class AnalysePlanteController extends ChangeNotifier{
 
       var res = await request.send();
       http.Response response = await http.Response.fromStream(res);
-      // data = jsonDecode(response.body);
+      var dataToJson = jsonDecode(utf8.decode(response.bodyBytes));
 
       print("request: " + request.toString());
-      print("Response : ${response.body}");
+      print("Response : ${dataToJson}");
       request.headers.addAll(headers);
 
-      data = response.body;
+      data = dataToJson;
 
       // Vérifier le code de statut de la réponse
       if (response.statusCode == 200) {
