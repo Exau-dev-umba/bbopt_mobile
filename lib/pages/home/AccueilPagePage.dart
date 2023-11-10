@@ -9,6 +9,8 @@ import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../controllers/ChampController.dart';
@@ -24,6 +26,9 @@ class AccueilPagePage extends StatefulWidget {
 
 class _AccueilPagePageState extends State<AccueilPagePage> {
   StreamController<void> _updateController = StreamController<void>();
+  TextEditingController date = TextEditingController();
+  TextEditingController heure = TextEditingController();
+  TextEditingController titreTache = TextEditingController();
   late Timer _timer;
   var isVisible=false;
   var tempF= 0.0;
@@ -102,18 +107,18 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
         centerTitle: true,
         backgroundColor: Constantes.ColorvertFonce,
         actions: [
-          Row(
-            children: [
-              badges.Badge(
-                position: badges.BadgePosition.custom(top: 10.sp, end: 10.sp),
-                child: IconButton(
-                  icon:Icon(CupertinoIcons.bell),
-                  onPressed: (){},),
-                badgeStyle: badges.BadgeStyle(
-                  badgeColor: Constantes.Colorwhite,
-                ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: badges.Badge(
+              position: badges.BadgePosition.custom(top: 10.sp, end: 10.sp),
+              child: IconButton(
+                icon: Icon(CupertinoIcons.bell),
+                onPressed: () {Navigator.pushNamed(context, Routes.notification);},
               ),
-            ],
+              badgeStyle: badges.BadgeStyle(
+                badgeColor: Constantes.Colorwhite,
+              ),
+            ),
           ),
         ],
       ),
@@ -161,7 +166,8 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                         )
                     ),
                     onTap: (){
-                      print("DATA   :${location.latitude} - ${location.longitude}");
+                      creationTache(context);
+                      // print("DATA   :${location.latitude} - ${location.longitude}");
                       // Navigator.pushNamed(context, Routes.champRoute);
                     },
                   )
@@ -205,23 +211,240 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
           carteAffiche(
               "Météo Locale",
               "${meteo.temperature.toStringAsFixed(0)}°C",
-              image: "${meteo.iconUrl!=''?meteo.iconUrl:"https://icones.pro/wp-content/uploads/2021/07/icone-meteo-verte.png"}", "",1, subtitle: "${meteo.description}"),
-          carteAffiche("Humidité", "${meteo.humidite} %", image: "assets/images/humidity (1).png", "",2, subtitle: "${meteo.ville}"),
-          carteAffiche("Vos champs", "${champCtrl.nbrChamp?? '0'}", image: "assets/images/des-champs (1).png", subtitle: "${champCtrl.nbrCulture?? '0'} culture(s) en croissance", Routes.champRoute,3),
-          carteAffiche("Tâches", "${tacheCtrl.nbrtache?? '0'}", image: "assets/images/target.png", Routes.taskRoute,4),
+              image: "${meteo.iconUrl!=''?meteo.iconUrl:"https://icones.pro/wp-content/uploads/2021/07/icone-meteo-verte.png"}", 1, subtitle: "${meteo.description}"),
+
+          carteAffiche("Humidité", "${meteo.humidite} %", image: "assets/images/humidity (1).png", 2, subtitle: "${meteo.ville}"),
+
+          carteAffiche(
+              "Vos champs",
+              "${champCtrl.nbrChamp?? '0'}",
+              image: "assets/images/des-champs (1).png",
+              subtitle: "${champCtrl.nbrCulture?? '0'} culture(s) en croissance",3,
+              onPressed: (){
+                setState(() {
+                  Navigator.pushNamed(context, Routes.champRoute);
+                });
+          }),
+          carteAffiche(
+              "Tâches",
+              "${tacheCtrl.nbrtache?? '0'}",
+              image: "assets/images/target.png", 4,
+              onPressed: (){
+                tacheCtrl.nbrtache !=0
+                    ? Navigator.pushNamed(context, Routes.taskRoute)
+                    :showSnackBar(context, "Vous n'avez pas des tâches, veillez en créer");
+          }),
         ],
       ),
     );
   }
+  showSnackBar(context, String message,) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(SnackBar(
+      content: Text(message,),
+      backgroundColor: Constantes.Colorjaune,
+      duration: Duration(seconds: 1),
+      action: SnackBarAction(
+          label: 'OK',
+          textColor: Constantes.Colorwhite,
+          onPressed: scaffold.hideCurrentSnackBar),
+    ));
+  }
+
+/*  Widget _ouvrirFormulaireDialog(BuildContext context) {
+    return StatefulBuilder(builder: (_, StateSetter setInnerState) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: AlertDialog(
+          title: Text(
+            "Demande de congé",
+            textAlign: TextAlign.center,
+            // style: TextStyle(fontWeight: FontWeight.bold,fontFamily: "Schyler",color: Utils.COLOR_ORANGE,fontSize: 25),
+          ),
+          // contentPadding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
+          content: SingleChildScrollView(
+            child: Container(
+              alignment: Alignment.center,
+              width: 450.0,
+              height: 350.0,
+              child: Container(
+                width: 300,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // _selectionnerConge(),
+                    // SizedBox(height: 16.0),
+                    Container(
+                      alignment: Alignment.center,
+                      // child: ChampSaisie(
+                      //   ctrl: dureeCtrl,
+                      //   validator: (val) => val!.isEmpty ? "Champ obligatoire" : null,
+                      //   label: "Durée du congé",
+                      //   hintext: "Durée",
+                      //   prefixIcon: Icons.calendar_month_sharp,
+                      //   type: TextInputType.number,
+                      //   required: true,
+                      // ),
+                    ),
+                    SizedBox(height: 16.0),
+                    DateTimePicker(
+                      controller: debutCtrl,
+                      type: DateTimePickerType.date,
+                      dateMask: 'd MMM yyyy',
+                      //initialValue: DateTime.now().toString(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2100),
+                      icon: Icon(Icons.event, color: Colors.amber[900],),
+                      dateLabelText: 'Date',
+                      timeLabelText: "Hour",
+                      decoration: InputDecoration(
+                        hintText: "Saisir...",
+                        prefixIcon: Icon(Icons.event),
+                        prefixIconColor: Utils.COLOR_ORANGE_CLAIR,
+                        border: _bordure(Utils.COLOR_ORANGE),
+                        focusedBorder:_bordure(Utils.COLOR_ORANGE),
+                        enabledBorder: _bordure(Utils.COLOR_ORANGE),
+                      ),
+                      cursorColor: Colors.amber[900],
+                      selectableDayPredicate: (date) {
+                        // Disable weekend days to select from the calendar
+                        if (date.weekday == 6 || date.weekday == 7) {
+                          return false;
+                        }
+                        return true;
+                      },
+                      onChanged: (val) => val,
+                      validator: (val) => val!.isEmpty ? "Champ obligatoire" : null,
+                      onSaved: (val) => val,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          actions: [
+
+            _dualButtonWidget(
+              ButtonAnnuler: 'Annuler',
+              ButtonAnnulerOnPressed: () {
+                Navigator.pop(context);
+              },
+              ButtonEnvoyer: 'Envoyer',
+              ButtonEnvoyerOnPressed: () {
+                _validerFormulaire(context);
+              },
+              ButtonEnvoyerColor: Colors.amber[900],
+              ButtonAnnulerColor: Colors.red,
+              ButtonEnvoyerTextColor: Colors.white,
+              ButtonAnnulerTextColor: Colors.white,
+            )
+          ],
+        ),
+      );
+    });
+  }*/
+
+
+  creationTache(BuildContext context) async {
+    TextEditingController dateTache = TextEditingController();
+    TextEditingController heure = TextEditingController();
+    bool? resultat = await showDialog<bool>(
+        context: context,
+        builder: (ctx) {
+          bool _error = false;
+          return StatefulBuilder(builder: (_, StateSetter setInnerState) {
+            return AlertDialog(
+              title: Text('Ajouter une tâche'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: dateTache,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.calendar_month),
+                        prefixIconColor: Constantes.ColorvertFonce,
+                        focusedBorder: OutlineInputBorder(),
+                        focusColor: Constantes.ColorvertFonce,
+                        labelText: "Date",
+                        hintText: "Saisir la date de la tâche",
+                        errorText: _error ? "Champ obligatoire" : null),
+                      onTap: ()async{
+                        DateTime? pickDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime(2101));
+
+                        if(pickDate!=null){
+                          setState(() {
+                            dateTache.text = DateFormat('yyyy-MM-dd').format(pickDate);
+                          });
+                        }
+                      },
+                  ),
+                  SizedBox(height: 12.sp,),
+                  TextField(
+                    controller: heure,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.access_time_sharp),
+                        prefixIconColor: Constantes.ColorvertFonce,
+                        focusedBorder: OutlineInputBorder(),
+                        focusColor: Constantes.ColorvertFonce,
+                        labelText: "Heure",
+                        hintText: "Saisir l'heure de la tâche",
+                        errorText: _error ? "Champ obligatoire" : null),
+                    onTap: ()async{
+                      TimeOfDay? pickTime = await showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.now());
+
+                      if(pickTime!=null){
+                        setState(() {
+                          // heure.text = TimeForma;
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  child: Text('Annuler', style: TextStyle(color: Colors.red),),
+                  onPressed: () {
+                    Navigator.pop(context, false);
+                  },
+                ),
+                TextButton(
+                  child: Text('Valider', style: TextStyle(color: Constantes.ColorvertFonce),),
+                  onPressed: () {
+                    setInnerState(() {
+                      _error = dateTache.text.isEmpty;
+                    });
+                    if (!_error) {
+                      Navigator.pop(context, true);
+                    }
+                  },
+                ),
+              ],
+            );
+          });
+        });
+
+    // apres fermeture de la boite de dialogue
+    // if (resultat != null) {
+    //   showSnackBar(context, "Valeur saisie: ${dateTache.text} ");
+    // }
+  }
+
   
-  carteAffiche(String title, String value, String routeName, int index, {String? image,String? subtitle})  {
+  carteAffiche(String title, String value,  int index, {String? image,String? subtitle, Function? onPressed})  {
     var meteo = context.watch<MeteoController>();
     return InkWell(
-      onTap: (){
-        setState(() {});
-        routeName==""?null:Navigator.pushNamed(context, routeName);
-        setState(() {});
-      },
+      onTap: onPressed as void Function()?,
       child: Center(
         child: Container(
           padding: EdgeInsets.only(right: 20.sp, left: 20.sp, top: 20.sp),

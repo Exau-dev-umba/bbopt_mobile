@@ -23,7 +23,7 @@ class AnalysePage extends StatefulWidget {
 class _AnalysePageState extends State<AnalysePage> {
   final _picker = ImagePicker();
   File? selectedImage;
-  String plants="";
+  String plants = "";
   var data;
   bool _isLoading = false;
 
@@ -41,7 +41,6 @@ class _AnalysePageState extends State<AnalysePage> {
       _isLoading = false;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +66,9 @@ class _AnalysePageState extends State<AnalysePage> {
               position: badges.BadgePosition.custom(top: 10.sp, end: 10.sp),
               child: IconButton(
                 icon: Icon(CupertinoIcons.bell),
-                onPressed: () {Navigator.pushNamed(context, Routes.notification);},
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.notification);
+                },
               ),
               badgeStyle: badges.BadgeStyle(
                 badgeColor: Constantes.Colorwhite,
@@ -81,6 +82,7 @@ class _AnalysePageState extends State<AnalysePage> {
       body: _body(context),
     );
   }
+
   ouvrirDialog(ctx, {required String plant}) async {
     bool? resulat = await showDialog<bool>(
       context: ctx,
@@ -133,16 +135,31 @@ class _AnalysePageState extends State<AnalysePage> {
         ),
         SingleChildScrollView(
           child: Column(children: [
-            Padding(
-              padding: const EdgeInsets.only(right: 260, top: 15),
-              child: Text(
-                "Analyse",
-                style: TextStyle(
-                    color: Constantes.ColorvertFonce,
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 8,),
+                  child: Row(
+                    children: [
+                      if(selectedImage!=null)
+                      IconButton(onPressed: (){
+                        setState(() {
+                          selectedImage = null;
+                        });
+                      }, icon: Icon(Icons.arrow_back, color: Constantes.ColorvertFonce,)),
+                      Padding(
+                        padding: selectedImage!=null? EdgeInsets.zero: EdgeInsets.only(left: 15),
+                        child: Text(
+                          "Analyse",
+                          style: TextStyle(
+                              color: Constantes.ColorvertFonce,
+                              fontSize: 22.sp,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
             _carte(
               context,
               title:
@@ -156,101 +173,116 @@ class _AnalysePageState extends State<AnalysePage> {
             ),
             _carte(
               context,
-              title: selectedImage==null? "Découvrez notre système d'analyse de plante": "Analyse de la plante",
+              title: selectedImage == null
+                  ? "Découvrez notre système d'analyse de plante"
+                  : "Analyse de la plante",
               sizeTitle: 18.sp,
               boldTitle: FontWeight.w500,
               sizeCarte: 40.h,
               simple: Flexible(
-                child: selectedImage==null? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Dévoilez les secrets de vos plantes en un instant ! "
-                      "Transformez une simple photo en une consultation végétale personnalisée. "
-                      "Découvrez la santé de vos cultures, "
-                      "identifiez les éventuelles maladies et cultivez le futur avec notre analyse intelligente. "
-                      "Votre jardin mérite le meilleur, offrez-lui une expertise numérique aujourd'hui !",
-                      style: TextStyle(fontSize: 16.sp, wordSpacing: 5),
-                    ),
-                    Spacer(),
-                    Text(
-                      "ORIENTATION",
-                      style: TextStyle(
-                        color: Constantes.ColorvertFonce,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacer(),
-                    Text(
-                      "Cliquez sur les noms des cultures ci-dessus",
-                      style: TextStyle(),
-                    ),
-
-                  ],
-                ): Container(
-                  // color: Constantes.Colorjaune,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                child: selectedImage == null
+                    ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Image.file(selectedImage!, height: 50.sp),
-                          SizedBox(width: Adaptive.w(5),),
-                          SizedBox(
-                            width: Adaptive.w(40),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "Appuyez sur le bouton ci-dessous pour analyser la photo de la plante.",
-                                  ),
-                                ),
-                                ElevatedButton(
-                                    onPressed: (){
-                                      data = '';
-                                      _loadingAnalyse();
-                                    },
-                                    style: ButtonStyle(
-                                      backgroundColor: MaterialStatePropertyAll(Constantes.ColorvertFonce)
-                                    ),
-                                    child: Text("Analyser")
-                                )
-                              ],
+                          Text(
+                            "Dévoilez les secrets de vos plantes en un instant ! "
+                            "Transformez une simple photo en une consultation végétale personnalisée. "
+                            "Découvrez la santé de vos cultures, "
+                            "identifiez les éventuelles maladies et cultivez le futur avec notre analyse intelligente. "
+                            "Votre jardin mérite le meilleur, offrez-lui une expertise numérique aujourd'hui !",
+                            style: TextStyle(fontSize: 16.sp, wordSpacing: 5),
+                          ),
+                          Spacer(),
+                          Text(
+                            "ORIENTATION",
+                            style: TextStyle(
+                              color: Constantes.ColorvertFonce,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 2.h,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Résultat : "),
-                          Flexible(
-                            child: Text("${data ?? ''}", style: TextStyle(
-                              fontWeight: FontWeight.w600
-                            ),),
+                          Spacer(),
+                          Text(
+                            "Cliquez sur les noms des cultures ci-dessus",
+                            style: TextStyle(),
                           ),
                         ],
+                      )
+                    : Container(
+                        // color: Constantes.Colorjaune,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.file(selectedImage!, height: 50.sp),
+                                SizedBox(
+                                  width: Adaptive.w(5),
+                                ),
+                                SizedBox(
+                                  width: Adaptive.w(40),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "Appuyez sur le bouton ci-dessous pour analyser la photo de la plante.",
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            data = '';
+                                            _loadingAnalyse();
+                                          },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStatePropertyAll(
+                                                      Constantes
+                                                          .ColorvertFonce)),
+                                          child: Text("Analyser"))
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 2.h,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Résultat : "),
+                                Flexible(
+                                  child: Text(
+                                    "${data ?? ''}",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Description : "),
+                                Flexible(
+                                  child: Text(
+                                    "${''}",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      SizedBox(height: 1.h,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Description : "),
-                          Flexible(
-                            child: Text("${''}", style: TextStyle(
-                                fontWeight: FontWeight.w500
-                            ),),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
               ),
               image: 'assets/images/cornfield.jpgg',
               background: Constantes.Colorwhite,
@@ -259,7 +291,7 @@ class _AnalysePageState extends State<AnalysePage> {
           ]),
         ),
         // _isLoading ? CircularProgressIndicator() : Text('En cliquer'),
-       Chargement(_isLoading)
+        Chargement(_isLoading)
       ],
     );
   }
@@ -309,18 +341,26 @@ class _AnalysePageState extends State<AnalysePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      button(text: "Manioc", onPressed: (){
-                        ouvrirDialog(context, plant:'cassava');
-                      }),
-                      button(text: "Maïs", onPressed: (){
-                        ouvrirDialog(context, plant:'corn');
-                      }),
-                      button(text: "Riz", onPressed: (){
-                        ouvrirDialog(context, plant:'rice');
-                      }),
-                      button(text: "Tomate", onPressed: (){
-                        ouvrirDialog(context, plant:'tomato');
-                      }),
+                      button(
+                          text: "Manioc",
+                          onPressed: () {
+                            ouvrirDialog(context, plant: 'cassava');
+                          }),
+                      button(
+                          text: "Maïs",
+                          onPressed: () {
+                            ouvrirDialog(context, plant: 'corn');
+                          }),
+                      button(
+                          text: "Riz",
+                          onPressed: () {
+                            ouvrirDialog(context, plant: 'rice');
+                          }),
+                      button(
+                          text: "Tomate",
+                          onPressed: () {
+                            ouvrirDialog(context, plant: 'tomato');
+                          }),
                     ],
                   ),
                 )
@@ -330,14 +370,12 @@ class _AnalysePageState extends State<AnalysePage> {
     );
   }
 
-
-
   getImageGallery() async {
     final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedImage != null) {
-        data='';
+        data = '';
         selectedImage = File(pickedImage.path);
       } else {
         print("Aucune image sélectionnée.");
@@ -350,7 +388,7 @@ class _AnalysePageState extends State<AnalysePage> {
 
     setState(() {
       if (pickedImage != null) {
-        data='';
+        data = '';
         selectedImage = File(pickedImage.path);
       } else {
         print("Aucune image sélectionnée.");
@@ -358,8 +396,10 @@ class _AnalysePageState extends State<AnalysePage> {
     });
   }
 
-  Widget button(
-      {Function? onPressed, required String text, }) {
+  Widget button({
+    Function? onPressed,
+    required String text,
+  }) {
     return InkWell(
       child: Container(
         child: Text(

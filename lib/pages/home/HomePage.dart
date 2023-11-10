@@ -1,4 +1,4 @@
-import 'package:bbopt_mobile/pages/avis/AvisPage.dart';
+import 'package:bbopt_mobile/pages/avis/InfosDialogue.dart';
 import 'package:bbopt_mobile/pages/communaute/CommunautePage.dart';
 import 'package:bbopt_mobile/pages/discuter/DiscuterPage.dart';
 import 'package:bbopt_mobile/pages/home/AccueilPagePage.dart';

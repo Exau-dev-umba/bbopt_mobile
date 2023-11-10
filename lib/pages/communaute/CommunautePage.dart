@@ -84,13 +84,17 @@ class _CommunautePageState extends State<CommunautePage> {
           centerTitle: true,
           backgroundColor: Constantes.ColorvertFonce,
           actions: [
-            IconButton(
-              padding: EdgeInsets.only(right: 5),
-              icon: Icon(CupertinoIcons.add_circled_solid),
-              onPressed: () {
-                ouvrirDialog(context);
-              },
-            )
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                padding: EdgeInsets.only(right: 5),
+                icon: Icon(CupertinoIcons.add_circled_solid),
+                onPressed: () {
+                  ouvrirDialog(context);
+                },
+              ),
+            ),
+
           ],
         ),
         body: _body());

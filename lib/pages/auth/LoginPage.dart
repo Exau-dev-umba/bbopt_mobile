@@ -259,14 +259,13 @@ class _LoginPageState extends State<LoginPage> {
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
-                            labelText: 'identifiant',
+                            labelText: 'Identifiant',
                             hintStyle: TextStyle(
                               color: Constantes.Colorwhite
                             ),
-                            hintText: "username ou email",
                             labelStyle: TextStyle(
                               color: Colors.white70,
-                              fontSize: 20.sp
+                              fontSize: 19.sp
                             ),
                             fillColor: Constantes.Colorwhite,
                             focusColor: Constantes.Colorwhite,
