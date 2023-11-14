@@ -1,11 +1,12 @@
 import 'package:bbopt_mobile/controllers/UserController.dart';
-import 'package:bbopt_mobile/pages/avis/InfosDialogue.dart';
 import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+import '../widgets/InfosDialogue.dart';
 
 class ProfilPage extends StatefulWidget {
   const ProfilPage({Key? key}) : super(key: key);
@@ -61,7 +62,7 @@ class _ProfilPageState extends State<ProfilPage> {
           ListTile(
             leading: Icon(Icons.call, color: Constantes.Colorwhite,),
             title: Text('${userCtrl.user?.phone==null? '+ XXX XXX XXX XXX':userCtrl.user?.phone}', style: TextStyle(color: Constantes.Colorwhite),),
-            onTap: () => null,
+            onTap: () => Navigator.pop(context),
           ),
           // ListTile(
           //   leading: Icon(CupertinoIcons.globe, color: Constantes.Colorwhite,),
@@ -89,7 +90,10 @@ class _ProfilPageState extends State<ProfilPage> {
                 ),
               ),
             ),
-            onTap: () => Navigator.pushNamed(context, Routes.notification),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, Routes.notification);
+            },
           ),
           // ListTile(
           //   leading: Icon(Icons.calendar_month, color: Constantes.Colorwhite,),
@@ -99,12 +103,12 @@ class _ProfilPageState extends State<ProfilPage> {
           ListTile(
             leading: Icon(Icons.settings, color: Constantes.Colorwhite,),
             title: Text('Paramètres', style: TextStyle(color: Constantes.Colorwhite),),
-            onTap: () => null,
+            onTap: () => Navigator.pop(context),
           ),
           ListTile(
             leading: Icon(Icons.help, color: Constantes.Colorwhite,),
             title: Text('Obetenir de l\'aide', style: TextStyle(color: Constantes.Colorwhite),),
-            onTap: () => null,
+            onTap: () => Navigator.pop(context),
           ),
           Divider( color: Constantes.Colorwhite,),
           // ListTile(
@@ -119,18 +123,59 @@ class _ProfilPageState extends State<ProfilPage> {
               color: Constantes.Colorwhite,
               width: 22,
             ),
-            onTap: () => InfosDialogue.contactezNous(context),
+            onTap: () {
+
+              Navigator.pop(context);
+              InfosDialogue.contactezNous(context);
+
+            },
           ),
           ListTile(
             title: Text('Déconnexion', style: TextStyle(color: Constantes.Colorwhite),),
             leading: Icon(Icons.exit_to_app, color: Constantes.Colorwhite,),
             onTap: () {
-              userCtrl.logout();
-              Navigator.pushNamedAndRemoveUntil(context, Routes.loginpage, (route) => false,);
+              Navigator.pop(context);
+              deconnexion(context);
             },
           )
         ],
       ),
     );
+  }
+
+  deconnexion(context) async {
+    bool? resulat = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        var userCtrl = context.watch<UserCtrl>();
+        return AlertDialog(
+          title: new Text("Deconnexion"),
+          content: new Text("Voulez-vous vraiment vous déconnecter ?"),
+          actions: <Widget>[
+            TextButton(
+              child: new Text(
+                "Annuler",
+                style: TextStyle(color: Colors.grey),
+              ),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+            ),
+            new TextButton(
+              child: new Text("Confirmer", style: TextStyle(color: Constantes.ColorvertFonce),),
+              onPressed: () {
+                userCtrl.logout();
+                Navigator.pushNamedAndRemoveUntil(context, Routes.loginpage, (route) => false,);
+              },
+            ),
+          ],
+        );
+      },
+    );
+// code executé apres fermeture de la boite de dialogue
+//     if (resulat != null) {
+//       var message = !resulat ? "Suppression Annulée" : "Suppression confirmée";
+//       showSnackBar(context, message);
+//     }
   }
 }

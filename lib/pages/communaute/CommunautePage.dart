@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class CommunautePage extends StatefulWidget {
@@ -18,7 +19,14 @@ class CommunautePage extends StatefulWidget {
   State<CommunautePage> createState() => _CommunautePageState();
 }
 
-class _CommunautePageState extends State<CommunautePage> {
+class _CommunautePageState extends State<CommunautePage> with TickerProviderStateMixin {
+  late final AnimationController _controller =
+      AnimationController(vsync: this, duration: Duration(seconds: 1))
+        ..repeat(reverse: true);
+
+  late final Animation<double> _animation =
+      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack);
+
   TextEditingController _textEditingController = TextEditingController();
   File? _image;
   final picker = ImagePicker();
@@ -44,29 +52,15 @@ class _CommunautePageState extends State<CommunautePage> {
     });
   }
 
-  WebViewController controller = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..setBackgroundColor(const Color(0x00000000))
-    ..setNavigationDelegate(
-      NavigationDelegate(
-        onProgress: (int progress) {
-          // Update loading bar.
-        },
-        onPageStarted: (String url) {},
-        onPageFinished: (String url) {},
-        onWebResourceError: (WebResourceError error) {},
-        onNavigationRequest: (NavigationRequest request) {
-          if (request.url.startsWith('http://13.51.242.50:8081')) {
-            return NavigationDecision.prevent;
-          }
-          return NavigationDecision.navigate;
-        },
-      ),
-    )
-    ..loadRequest(Uri.parse('https://bbopt.net/posts'));
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    var postCtrl = context.watch<CommunauteController>();
     return Scaffold(
         drawer: ProfilPage(),
         appBar: AppBar(
@@ -74,7 +68,8 @@ class _CommunautePageState extends State<CommunautePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/logos/LOGO AGRIOPT 2K23.png',
+              Image.asset(
+                'assets/logos/LOGO AGRIOPT 2K23.png',
                 fit: BoxFit.fitWidth,
                 height: MediaQuery.of(context).size.height * 1,
                 width: MediaQuery.of(context).size.width * 0.4,
@@ -84,7 +79,21 @@ class _CommunautePageState extends State<CommunautePage> {
           centerTitle: true,
           backgroundColor: Constantes.ColorvertFonce,
           actions: [
-            Padding(
+            postCtrl.posts ==null?
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: FadeTransition(
+                      opacity: _animation,
+                    child: Placeholder(
+                      color: Colors.transparent,
+                      child: CircleAvatar(
+                        maxRadius: 15.sp,
+                        backgroundColor: Constantes.ColorLight,
+                      ),
+                    ),
+                  ),
+                )
+            :Padding(
               padding: const EdgeInsets.all(8.0),
               child: IconButton(
                 padding: EdgeInsets.only(right: 5),
@@ -94,16 +103,9 @@ class _CommunautePageState extends State<CommunautePage> {
                 },
               ),
             ),
-
           ],
         ),
         body: _body());
-  }
-
-  webViewDiagnostiquer() {
-    return WebViewWidget(
-      controller: controller,
-    );
   }
 
   ouvrirDialog(context) async {
@@ -128,18 +130,18 @@ class _CommunautePageState extends State<CommunautePage> {
               _image != null
                   ? Container(
                       child: Image.file(
-                        _image!,
-                        height: 20.h,
-                        fit: BoxFit.cover,
-                      ))
+                      _image!,
+                      height: 20.h,
+                      fit: BoxFit.cover,
+                    ))
                   : IconButton(
-                    icon: Icon(
+                      icon: Icon(
                         Icons.add_a_photo,
                         size: 20.sp,
                         color: Colors.grey,
                       ),
-                onPressed: getImage,
-                  ),
+                      onPressed: getImage,
+                    ),
               SizedBox(height: 16.0.sp),
               ElevatedButton(
                 style: ButtonStyle(
@@ -181,27 +183,37 @@ class _CommunautePageState extends State<CommunautePage> {
       edgeOffset: 0.5,
       triggerMode: RefreshIndicatorTriggerMode.onEdge,
       onRefresh: () => refleshPosts(),
-      child: ListView.builder(
-        shrinkWrap: false,
-        physics: ScrollPhysics(),
-        itemCount: postCtrl.posts?.length,
-        itemBuilder: (BuildContext ctx, index) {
-          var post = postCtrl.posts?[index];
-          return Container(
-              color: Constantes.ColorLight,
-              child: Column(children: [
-                _post(
-                  nameUser: "${post?.user?.firstname} ${post?.user?.name}",
-                  description: "${post?.description}",
-                  image: "assets/images/VISUEL-BBOPT-DECL3.jpg",
-                  //"${Constantes.BASE_URL}/${post?.image}",
-                  background: Constantes.ColorvertFonce,
-                  nbrLike: 746,
-                  nbrComment: 385,
-                  colortext: Constantes.Colorjaune,
-                ),
-              ]));
-        },
+      child: Stack(
+        children: [
+          ListView.builder(
+            shrinkWrap: false,
+            physics: ScrollPhysics(),
+            itemCount: postCtrl.posts?.length,
+            itemBuilder: (BuildContext ctx, index) {
+              var post = postCtrl.posts?[index];
+              return Container(
+                  color: Constantes.ColorLight,
+                  child: Column(children: [
+                    post != null
+                        ? _post(
+                            nameUser:
+                                "${post?.user?.firstname} ${post?.user?.name}",
+                            description: "${post?.description}",
+                            image: "assets/images/VISUEL-BBOPT-DECL3.jpg",
+                            //"${Constantes.BASE_URL}/${post?.image}",
+                            background: Constantes.ColorvertFonce,
+                            nbrLike: 746,
+                            nbrComment: 385,
+                            colortext: Constantes.Colorjaune,
+                          )
+                        : noData(),
+                  ]));
+            },
+          ),
+          if(postCtrl.posts==null)Center(
+            child: Text("Ploblème de connexion  😤"),
+          )
+        ],
       ),
     );
   }
@@ -245,8 +257,10 @@ class _CommunautePageState extends State<CommunautePage> {
                   trimMode: TrimMode.Line,
                   trimCollapsedText: 'En voir plus',
                   trimExpandedText: ' voir moins',
-                  moreStyle: TextStyle(fontSize: 15.5.sp, fontWeight: FontWeight.bold),
-                  lessStyle: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500),
+                  moreStyle:
+                      TextStyle(fontSize: 15.5.sp, fontWeight: FontWeight.bold),
+                  lessStyle:
+                      TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500),
                 ),
               ],
             ),
@@ -274,9 +288,12 @@ class _CommunautePageState extends State<CommunautePage> {
                       Row(children: [
                         Row(
                           children: [
-                            Icon(
-                              Icons.favorite,
-                              color: Constantes.Colorjaune,
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.favorite,
+                                color: Constantes.Colorjaune,
+                              ),
                             ),
                             Text("609", style: TextStyle(color: colortext)),
                           ],
@@ -284,24 +301,228 @@ class _CommunautePageState extends State<CommunautePage> {
                         SizedBox(width: 10),
                         Row(
                           children: [
-                            Icon(
-                              Icons.comment,
-                              color: Constantes.Colorjaune,
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.comment,
+                                color: Constantes.Colorjaune,
+                              ),
                             ),
                             Text("120", style: TextStyle(color: colortext)),
                           ],
                         ),
                       ]),
                       Row(children: [
-                        Icon(
-                          Icons.share,
-                          color: Constantes.Colorjaune,
+                        IconButton(
+                          onPressed: () {
+                            sharePosts();
+                          },
+                          icon: Icon(
+                            Icons.share,
+                            color: Constantes.Colorjaune,
+                          ),
                         ),
                       ])
                     ]),
               )),
         ],
       ),
+    );
+  }
+
+  noData() {
+    return Container(
+      margin: EdgeInsets.only(top: 20.sp, right: 10.sp, left: 10.sp),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Constantes.Colorjaune,
+      ),
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            padding: EdgeInsets.all(12.sp),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    FadeTransition(
+                      opacity: _animation,
+                      child: Placeholder(
+                        color: Colors.transparent,
+                        child: CircleAvatar(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Constantes.ColorLight,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: Adaptive.w(3)),
+                    FadeTransition(
+                        opacity: _animation,
+                        child: Placeholder(
+                            color: Colors.transparent,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Constantes.ColorLight,
+                                  ),
+                                  width: Adaptive.w(15),
+                                  height: 2.h,
+                                ),
+                                SizedBox(width: 0.3.h,),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Constantes.ColorLight,
+                                  ),
+                                  width: Adaptive.w(15),
+                                  height: 2.h,
+                                ),
+                              ],
+                            )
+                        ))
+                  ],
+                ),
+                SizedBox(height: 3.h),
+                FadeTransition(
+                  opacity: _animation,
+                  child: Placeholder(
+                    color: Colors.transparent,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Constantes.ColorLight,
+                          ),
+                          width: Adaptive.w(30),
+                          height: 1.h,
+                        ),
+                        SizedBox(height: 0.3.h,),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Constantes.ColorLight,
+                          ),
+                          width: Adaptive.w(80),
+                          height: 1.h,
+                        ),
+                        SizedBox(height: 0.3.h,),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Constantes.ColorLight,
+                          ),
+                          width: Adaptive.w(90),
+                          height: 1.h,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          FadeTransition(
+            opacity: _animation,
+            child: Placeholder(
+              color: Colors.transparent,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Constantes.ColorLight,
+                ),
+                width: Adaptive.w(double.infinity),
+                // height: 5.h,
+              ),
+            ),
+          ),
+          Container(
+              decoration: BoxDecoration(
+                color: Constantes.Colorwhite,
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(19.sp),
+                    bottomLeft: Radius.circular(19.sp)),
+              ),
+              alignment: Alignment.center,
+              width: Adaptive.w(double.infinity),
+              height: 10.h,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(mainAxisSize: MainAxisSize.min, children: [
+                        FadeTransition(
+                          opacity: _animation,
+                          child: Placeholder(
+                            color: Colors.transparent,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Constantes.ColorLight,
+                              ),
+                              width: Adaptive.w(15),
+                              height: 3.h,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        FadeTransition(
+                          opacity: _animation,
+                          child: Placeholder(
+                            color: Colors.transparent,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Constantes.ColorLight,
+                              ),
+                              width: Adaptive.w(15),
+                              height: 3.h,
+                            ),
+                          ),
+                        ),
+                      ]),
+                      FadeTransition(
+                        opacity: _animation,
+                        child: Placeholder(
+                          color: Colors.transparent,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Constantes.ColorLight,
+                            ),
+                            width: Adaptive.w(15),
+                            height: 3.h,
+                          ),
+                        ),
+                      )
+                    ]),
+              )),
+        ],
+      ),
+    );
+  }
+
+  sharePosts() async {
+    await Share.share(
+      "text",
+      subject: "subject",
+      sharePositionOrigin:
+          Rect.fromCenter(center: Offset.zero, width: 0, height: 0),
+      // sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
     );
   }
 }

@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bbopt_mobile/controllers/MeteoController.dart';
 import 'package:bbopt_mobile/controllers/TacheController.dart';
@@ -24,8 +25,15 @@ class AccueilPagePage extends StatefulWidget {
   State<AccueilPagePage> createState() => _AccueilPagePageState();
 }
 
-class _AccueilPagePageState extends State<AccueilPagePage> {
+class _AccueilPagePageState extends State<AccueilPagePage> with TickerProviderStateMixin {
   StreamController<void> _updateController = StreamController<void>();
+  late final AnimationController _controller =
+  AnimationController(vsync: this, duration: Duration(seconds: 1))
+    ..repeat(reverse: true);
+
+  late final Animation<double> _animation =
+  CurvedAnimation(parent: _controller, curve: Curves.easeOutBack);
+
   TextEditingController date = TextEditingController();
   TextEditingController heure = TextEditingController();
   TextEditingController titreTache = TextEditingController();
@@ -88,6 +96,13 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
       super.dispose();
     }
   }
+
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,11 +149,11 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
     var location = context.watch<LocationService>();
     return SingleChildScrollView(
       child: Column(
-        children: [
+        children:  [
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ButtonBar(
+              /*ButtonBar(
                 children: [
                   InkWell(
                     child: Container(
@@ -172,7 +187,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                     },
                   )
                 ],
-              ),
+              ),*/
               ButtonBar(
                 children: [
                   InkWell(
@@ -208,10 +223,11 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
               ),
             ],
           ),
+
           carteAffiche(
               "Météo Locale",
               "${meteo.temperature.toStringAsFixed(0)}°C",
-              image: "${meteo.iconUrl!=''?meteo.iconUrl:"https://icones.pro/wp-content/uploads/2021/07/icone-meteo-verte.png"}", 1, subtitle: "${meteo.description}"),
+              image: "${meteo.iconUrl}", 1, subtitle: "${meteo.description}"),
 
           carteAffiche("Humidité", "${meteo.humidite} %", image: "assets/images/humidity (1).png", 2, subtitle: "${meteo.ville}"),
 
@@ -222,7 +238,9 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
               subtitle: "${champCtrl.nbrCulture?? '0'} culture(s) en croissance",3,
               onPressed: (){
                 setState(() {
-                  Navigator.pushNamed(context, Routes.champRoute);
+                  champCtrl.nbrChamp !=0?
+                  Navigator.pushNamed(context, Routes.champRoute)
+                      :showSnackBar(context, "Vous n'avez pas des champs, veillez en créer");
                 });
           }),
           carteAffiche(
@@ -235,8 +253,96 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
                     :showSnackBar(context, "Vous n'avez pas des tâches, veillez en créer");
           }),
         ],
-      ),
+      )
+/*          :    Stack(
+            children: [
+        Column(
+          children:  [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ButtonBar(
+                    children: [
+                      InkWell(
+                        child: Container(
+                            padding: EdgeInsets.all(5),
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Constantes.Colorwhite,
+                                borderRadius: BorderRadius.circular(8.sp),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Constantes.Colorblack.withOpacity(.1),
+                                      offset: Offset(0,1),
+                                      spreadRadius: 2.sp,
+                                      blurRadius: 1.sp
+                                  )
+                                ]
+                            ),
+                            child: Text(
+                              "Créer une tache",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: Constantes.Colorblack
+
+                              ),
+                            )
+                        ),
+                        onTap: (){
+                          creationTache(context);
+                          // print("DATA   :${location.latitude} - ${location.longitude}");
+                          // Navigator.pushNamed(context, Routes.champRoute);
+                        },
+                      )
+                    ],
+                  ),
+                  ButtonBar(
+                    children: [
+                      InkWell(
+                        child: Container(
+                            padding: EdgeInsets.all(5),
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Constantes.Colorwhite,
+                                borderRadius: BorderRadius.circular(8.sp),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Constantes.Colorblack.withOpacity(.1),
+                                      offset: Offset(0,1),
+                                      spreadRadius: 2.sp,
+                                      blurRadius: 1.sp
+                                  )
+                                ]
+                            ),
+                            child: Text(
+                              "Créer un champs",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: Constantes.Colorblack
+
+                              ),
+                            )
+                        ),
+                        onTap: (){
+                          Navigator.pushNamed(context, Routes.createChampRoute);
+                        },
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              noData(),
+              noData(),
+              noData(),
+              noData(),
+          ],
+        ),
+              Center(child: Text("Ploblème de connexion  😤"))
+      ],
+          )*/
     );
+
+
   }
   showSnackBar(context, String message,) {
     final scaffold = ScaffoldMessenger.of(context);
@@ -251,98 +357,6 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
     ));
   }
 
-/*  Widget _ouvrirFormulaireDialog(BuildContext context) {
-    return StatefulBuilder(builder: (_, StateSetter setInnerState) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: AlertDialog(
-          title: Text(
-            "Demande de congé",
-            textAlign: TextAlign.center,
-            // style: TextStyle(fontWeight: FontWeight.bold,fontFamily: "Schyler",color: Utils.COLOR_ORANGE,fontSize: 25),
-          ),
-          // contentPadding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
-          content: SingleChildScrollView(
-            child: Container(
-              alignment: Alignment.center,
-              width: 450.0,
-              height: 350.0,
-              child: Container(
-                width: 300,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // _selectionnerConge(),
-                    // SizedBox(height: 16.0),
-                    Container(
-                      alignment: Alignment.center,
-                      // child: ChampSaisie(
-                      //   ctrl: dureeCtrl,
-                      //   validator: (val) => val!.isEmpty ? "Champ obligatoire" : null,
-                      //   label: "Durée du congé",
-                      //   hintext: "Durée",
-                      //   prefixIcon: Icons.calendar_month_sharp,
-                      //   type: TextInputType.number,
-                      //   required: true,
-                      // ),
-                    ),
-                    SizedBox(height: 16.0),
-                    DateTimePicker(
-                      controller: debutCtrl,
-                      type: DateTimePickerType.date,
-                      dateMask: 'd MMM yyyy',
-                      //initialValue: DateTime.now().toString(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                      icon: Icon(Icons.event, color: Colors.amber[900],),
-                      dateLabelText: 'Date',
-                      timeLabelText: "Hour",
-                      decoration: InputDecoration(
-                        hintText: "Saisir...",
-                        prefixIcon: Icon(Icons.event),
-                        prefixIconColor: Utils.COLOR_ORANGE_CLAIR,
-                        border: _bordure(Utils.COLOR_ORANGE),
-                        focusedBorder:_bordure(Utils.COLOR_ORANGE),
-                        enabledBorder: _bordure(Utils.COLOR_ORANGE),
-                      ),
-                      cursorColor: Colors.amber[900],
-                      selectableDayPredicate: (date) {
-                        // Disable weekend days to select from the calendar
-                        if (date.weekday == 6 || date.weekday == 7) {
-                          return false;
-                        }
-                        return true;
-                      },
-                      onChanged: (val) => val,
-                      validator: (val) => val!.isEmpty ? "Champ obligatoire" : null,
-                      onSaved: (val) => val,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          actions: [
-
-            _dualButtonWidget(
-              ButtonAnnuler: 'Annuler',
-              ButtonAnnulerOnPressed: () {
-                Navigator.pop(context);
-              },
-              ButtonEnvoyer: 'Envoyer',
-              ButtonEnvoyerOnPressed: () {
-                _validerFormulaire(context);
-              },
-              ButtonEnvoyerColor: Colors.amber[900],
-              ButtonAnnulerColor: Colors.red,
-              ButtonEnvoyerTextColor: Colors.white,
-              ButtonAnnulerTextColor: Colors.white,
-            )
-          ],
-        ),
-      );
-    });
-  }*/
 
 
   creationTache(BuildContext context) async {
@@ -413,7 +427,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
               ),
               actions: [
                 TextButton(
-                  child: Text('Annuler', style: TextStyle(color: Colors.red),),
+                  child: Text('Annuler', style: TextStyle(color: Colors.grey),),
                   onPressed: () {
                     Navigator.pop(context, false);
                   },
@@ -501,6 +515,117 @@ class _AccueilPagePageState extends State<AccueilPagePage> {
 
               index==1?Image.network(image!, width: meteo.iconUrl!=null?null:Adaptive.w(10),):Image.asset(image!, width: Adaptive.w(10),),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  noData()  {
+    return Center(
+      child: FadeTransition(
+        opacity: _animation,
+        child: Placeholder(
+          color: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.only(right: 20.sp, left: 20.sp, top: 20.sp),
+            margin: EdgeInsets.only(right: 15.sp, left: 15.sp, bottom: 20.sp),
+            alignment: Alignment.centerRight,
+            width: Adaptive.w(100),
+            height: 15.h,
+            decoration: BoxDecoration(
+                color: Constantes.Colorwhite,
+                borderRadius: BorderRadius.circular(15.sp),
+                boxShadow: [
+                  BoxShadow(
+                      color: Constantes.Colorblack.withOpacity(.1),
+                      offset: const Offset(3,5),
+                      spreadRadius: 2.sp,
+                      blurRadius: 1.sp
+                  )
+                ]
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FadeTransition(
+                      opacity: _animation,
+                      child: Placeholder(
+                        color: Colors.transparent,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Constantes.ColorLight,
+                          ),
+                          width: Adaptive.w(30),
+                          height: 2.h,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10.sp,),
+                    FadeTransition(
+                      opacity: _animation,
+                      child: Placeholder(
+                        color: Colors.transparent,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Constantes.ColorLight,
+                          ),
+                          width: Adaptive.w(15),
+                          height: 5.h,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 1.h,),
+                    FadeTransition(
+                      opacity: _animation,
+                      child: Placeholder(
+                        color: Colors.transparent,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Constantes.ColorLight,
+                              ),
+                              width: Adaptive.w(15),
+                              height: 0.5.h,
+                            ),
+                            SizedBox(height: 0.2.h,),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Constantes.ColorLight,
+                              ),
+                              width: Adaptive.w(30),
+                              height: 0.5.h,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                FadeTransition(
+                  opacity: _animation,
+                  child: Placeholder(
+                      color: Colors.transparent,
+                      child: CircleAvatar(
+                        backgroundColor: Constantes.ColorLight,
+                      )
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

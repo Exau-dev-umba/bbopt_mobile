@@ -18,19 +18,44 @@ class DetailChampsPage extends StatelessWidget {
         leadingWidth: 25.sp,
         centerTitle: true,
         backgroundColor: Constantes.ColorvertFonce,
-/*        actions: [
-          DropdownButton<String>(
-            padding: EdgeInsets.only(right: 12.sp),
-            icon: Icon(Icons.more_vert, color: Constantes.Colorwhite),
-            items: <String>['Supprimer','Modier'].map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (_) {},
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: PopupMenuButton(
+              itemBuilder: (context)=>[
+                PopupMenuItem(
+                  onTap: (){
+
+                  },
+                    child: Row(
+                      children: [
+                        Icon(Icons.edit_note_sharp, color: Constantes.ColorvertFonce,),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text("Modifier"),
+                        )
+                      ],
+                    )
+                ),
+                PopupMenuItem(
+                    onTap: (){
+
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.delete, color: Colors.red,),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text("Supprimer"),
+                        )
+                      ],
+                    )
+                ),
+              ],
+              child: Icon(Icons.more_vert),
+            ),
           )
-        ],*/
+        ],
       ),
       body: Column(
         children: [
@@ -65,16 +90,6 @@ class DetailChampsPage extends StatelessWidget {
                 style: TextStyle(fontSize: 18.0),
               ),*/
             ),
-/*        Positioned(
-              left: 8.0,
-              top: 60.0,
-              child: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(Icons.arrow_back, color: Colors.white),
-              ),
-            )*/
           ],
         ),
         Container(
@@ -113,31 +128,43 @@ class DetailChampsPage extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         SizedBox(height: 20.0.sp),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Text("Culture(s) :".toUpperCase(),style: TextStyle(color: Colors.white)),
-              // Expanded(flex: 1, child: Text("Culture(s) :")),
-              Expanded(
-                  flex: 6,
-                  child: Row(
-                    children: champ.cultures!.map((e) {
-                      return TextButton(
-                        onPressed: (){
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text("Culture(s) :".toUpperCase(),style: TextStyle(color: Colors.white)),
+            // Expanded(flex: 1, child: Text("Culture(s) :")),
+            Row(
+              children: champ.cultures!.map((e) {
+                return SizedBox(
+                  width: Adaptive.w(20),
+                  child: Container(
+                    margin: EdgeInsets.all(5),
+                    child: ElevatedButton(
+                        onPressed: (){},
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(Constantes.ColorvertFonce)
+                        ),
+                        child: Text(
+                          "${e}",
+                          style: TextStyle(color: Colors.white),
+                          overflow: TextOverflow.ellipsis,)
+                    ),
+                  ),
+                );
+                return TextButton(
+                  onPressed: (){
 
-                        },
-                          style: ButtonStyle(
-                            side: MaterialStateProperty.all(BorderSide(width: 5.sp, )),
-                            backgroundColor: MaterialStateProperty.all(Constantes.ColorvertFonce)
-                          ),
-                        child: Text("${e}",style: TextStyle(color: Colors.white), overflow: TextOverflow.ellipsis,));
+                  },
+                    style: ButtonStyle(
+                      // side: MaterialStateProperty.all(BorderSide(width: 5.sp, )),
+                      backgroundColor: MaterialStateProperty.all(Constantes.ColorvertFonce),
+                    ),
+                  child: Text("${e}",style: TextStyle(color: Colors.white), overflow: TextOverflow.ellipsis,));
 
-                    }).toList(),
-                  )),
-              // Expanded(flex: 1, child: coursePrice)
-            ],
-          ),
+              }).toList(),
+            ),
+            // Expanded(flex: 1, child: coursePrice)
+          ],
         ),
       ],
     );

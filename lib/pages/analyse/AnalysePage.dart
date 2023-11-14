@@ -24,6 +24,7 @@ class _AnalysePageState extends State<AnalysePage> {
   final _picker = ImagePicker();
   File? selectedImage;
   String plants = "";
+  String nomPlante = "";
   var data;
   bool _isLoading = false;
 
@@ -83,6 +84,21 @@ class _AnalysePageState extends State<AnalysePage> {
     );
   }
 
+  //   nomPlantes() {
+  //   switch (plants) {
+  //     case  (plants == 'cassava'):
+  //       return nomPlante == "Manioc";
+  //     case plants == 'corn':
+  //       return nomPlante == "Maïs";
+  //     case plants == rice:
+  //       return nomPlante == "Riz";
+  //       case plants == 'tomato';
+  //       return nomPlante == "Tomate";
+  //     default:
+  //       return nomPlante;
+  //   }
+  // }
+
   ouvrirDialog(ctx, {required String plant}) async {
     bool? resulat = await showDialog<bool>(
       context: ctx,
@@ -135,7 +151,6 @@ class _AnalysePageState extends State<AnalysePage> {
         ),
         SingleChildScrollView(
           child: Column(children: [
-
                 Padding(
                   padding: const EdgeInsets.only(top: 8,),
                   child: Row(
@@ -175,7 +190,7 @@ class _AnalysePageState extends State<AnalysePage> {
               context,
               title: selectedImage == null
                   ? "Découvrez notre système d'analyse de plante"
-                  : "Analyse de la plante",
+                  : "Analyse de la plante : ",
               sizeTitle: 18.sp,
               boldTitle: FontWeight.w500,
               sizeCarte: 40.h,
@@ -207,82 +222,90 @@ class _AnalysePageState extends State<AnalysePage> {
                           ),
                         ],
                       )
-                    : Container(
-                        // color: Constantes.Colorjaune,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
+                    : Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Image.file(selectedImage!, height: 50.sp),
-                                SizedBox(
-                                  width: Adaptive.w(5),
-                                ),
-                                SizedBox(
-                                  width: Adaptive.w(40),
-                                  child: Column(
+                            Image.file(
+                                selectedImage!,
+                                height: 50.sp,
+                                width: Adaptive.w(32),
+                                alignment: Alignment.topLeft
+                            ),
+                            SizedBox(
+                              width: Adaptive.w(2),
+                            ),
+                            SizedBox(
+                              width: Adaptive.w(50),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                children: [
+                                  Row(
                                     mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
                                     children: [
                                       Flexible(
                                         child: Text(
                                           "Appuyez sur le bouton ci-dessous pour analyser la photo de la plante.",
+                                          softWrap: true,
+                                          overflow: TextOverflow.clip,
                                         ),
                                       ),
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            data = '';
-                                            _loadingAnalyse();
-                                          },
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStatePropertyAll(
-                                                      Constantes
-                                                          .ColorvertFonce)),
-                                          child: Text("Analyser"))
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Résultat : "),
-                                Flexible(
-                                  child: Text(
-                                    "${data ?? ''}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Description : "),
-                                Flexible(
-                                  child: Text(
-                                    "${''}",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ],
+
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        data = '';
+                                        _loadingAnalyse();
+                                      },
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStatePropertyAll(
+                                                  Constantes
+                                                      .ColorvertFonce)),
+                                      child: Text("Analyser"))
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
+                        SizedBox(height: 10.sp,),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Résultat : "),
+                            Flexible(
+                              child: Text(
+                                "${data ?? ''}",
+                                style:
+                                    TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Description : "),
+                            Flexible(
+                              child: Text(
+                                "${''}",
+                                style:
+                                    TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
               ),
               image: 'assets/images/cornfield.jpgg',
               background: Constantes.Colorwhite,

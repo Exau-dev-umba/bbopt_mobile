@@ -53,6 +53,7 @@ dependencies:
   chat_gpt_api: ^2.0.0
   readmore: ^2.2.0
   fluttertoast: ^8.2.3
+  share_plus: ^7.2.1
 #  chat_gpt_flutter: ^1.0.10
 
 dev_dependencies:

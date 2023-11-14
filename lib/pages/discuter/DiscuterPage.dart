@@ -251,6 +251,11 @@ example_graphic(){
               cursorWidth: Adaptive.w(0.2),
               autocorrect: true,
               controller: controller,
+              maxLines: 5,
+              minLines: 1,
+              onChanged: (text){
+
+              },
               decoration: InputDecoration(
                 hintText: "Entrez un message...",
                 border: InputBorder.none,

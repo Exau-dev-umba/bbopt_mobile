@@ -43,7 +43,7 @@ class _SplashscreenState extends State<Splashscreen> {
       champCtrl.recuperNbrCulture();
       var userCtrl = context.read<UserCtrl>();
       var tkn = stockage.read(StockageKeys.token);
-      Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {
+      Future.delayed(const Duration(milliseconds: 1)).then((value) => setState(() {
         isLoaded = true;
         tkn==null?null:userCtrl.recuperDataAPI();
       }));
@@ -52,24 +52,23 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   Widget build(BuildContext context) {
     var tkn = stockage.read(StockageKeys.token);
-    var userCtrl = context.read<UserCtrl>();
     return SplashScreenView(
+      // speed: Duration(microseconds: 1),
+      duration: Duration(microseconds: 1),
       displayLoading: false,
       navigateWhere: isLoaded,
       navigateRoute: tkn==null?LoginPage(): HomePage(),
       backgroundColor: Constantes.ColorvertFonce,
       text: WavyAnimatedText(
         "Best Bilanga Optimal",
-        speed: Duration(milliseconds: 1),
+        speed: Duration(microseconds: 1),
         textStyle: const TextStyle(
           color: Constantes.Colorwhite,
           fontSize: 12,
-          // fontWeight: FontWeight.bold,
         ),
       ),
       imageSrc: "assets/logos/LOGO AGRIOPT 2K23.png",
       logoSize: 70.sp,
-      //  displayLoading: false,
     );
   }
   }
