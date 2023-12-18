@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class CommunautePage extends StatefulWidget {
   const CommunautePage({Key? key}) : super(key: key);
@@ -77,6 +76,7 @@ class _CommunautePageState extends State<CommunautePage> with TickerProviderStat
             ],
           ),
           centerTitle: true,
+          iconTheme: IconThemeData(color: Constantes.Colorwhite),
           backgroundColor: Constantes.ColorvertFonce,
           actions: [
             postCtrl.posts ==null?
@@ -153,7 +153,7 @@ class _CommunautePageState extends State<CommunautePage> with TickerProviderStat
                   _image = null;
                   setState(() {});
                 },
-                child: Text("Publier"),
+                child: Text("Publier", style: TextStyle(color: Constantes.Colorwhite),),
               )
             ],
           ),

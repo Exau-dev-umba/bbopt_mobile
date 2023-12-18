@@ -78,6 +78,7 @@ class _AnalysePageState extends State<AnalysePage> {
           ),
         ],
         centerTitle: true,
+        iconTheme: IconThemeData(color: Constantes.Colorwhite),
         backgroundColor: Constantes.ColorvertFonce,
       ),
       body: _body(context),
@@ -268,7 +269,7 @@ class _AnalysePageState extends State<AnalysePage> {
                                               MaterialStatePropertyAll(
                                                   Constantes
                                                       .ColorvertFonce)),
-                                      child: Text("Analyser"))
+                                      child: Text("Analyser", style: TextStyle(color: Constantes.Colorwhite),))
                                 ],
                               ),
                             ),
@@ -360,7 +361,7 @@ class _AnalysePageState extends State<AnalysePage> {
             ),
             simple ??
                 Padding(
-                  padding: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 4),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

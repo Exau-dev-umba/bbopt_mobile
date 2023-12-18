@@ -16,7 +16,9 @@ class DetailChampsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("${champ.nom?.toUpperCase()}"),
         leadingWidth: 25.sp,
+        iconTheme: IconThemeData(color: Constantes.Colorwhite),
         centerTitle: true,
+        titleTextStyle: TextStyle(color: Colors.white),
         backgroundColor: Constantes.ColorvertFonce,
         actions: [
           Padding(
@@ -82,7 +84,7 @@ class DetailChampsPage extends StatelessWidget {
                 )),
             Container(
               height: MediaQuery.of(context).size.height * 0.5,
-              padding: EdgeInsets.all(40.0),
+              padding: EdgeInsets.all(20),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(color: Colors.black87,),
               child:  topContentText()       /*Text(
@@ -131,14 +133,14 @@ class DetailChampsPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text("Culture(s) :".toUpperCase(),style: TextStyle(color: Colors.white)),
+            Text("Culture(s) : ".toUpperCase(),style: TextStyle(color: Colors.white)),
             // Expanded(flex: 1, child: Text("Culture(s) :")),
             Row(
               children: champ.cultures!.map((e) {
                 return SizedBox(
-                  width: Adaptive.w(20),
+                  width: Adaptive.w(18),
                   child: Container(
-                    margin: EdgeInsets.all(5),
+                    margin: EdgeInsets.all(2),
                     child: ElevatedButton(
                         onPressed: (){},
                         style: ButtonStyle(
@@ -146,7 +148,7 @@ class DetailChampsPage extends StatelessWidget {
                         ),
                         child: Text(
                           "${e}",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white, fontSize: 14.sp),
                           overflow: TextOverflow.ellipsis,)
                     ),
                   ),

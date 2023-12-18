@@ -32,6 +32,8 @@ class _ChampsPageState extends State<ChampsPage> {
         title: Text("VOS CHAMPS"),
         leadingWidth: 25.sp,
         centerTitle: true,
+        titleTextStyle: TextStyle(color: Colors.white),
+        iconTheme: IconThemeData(color: Constantes.Colorwhite),
         backgroundColor: Constantes.ColorvertFonce,
       ),
       body: _body(),

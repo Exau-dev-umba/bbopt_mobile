@@ -3,7 +3,6 @@ import 'package:bbopt_mobile/utils/Constantes.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:graphic/graphic.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:grouped_list/grouped_list.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -28,6 +27,7 @@ class _DiscuterPageState extends State<DiscuterPage> {
       appBar: AppBar(
         title: Text('DISCUTER', style: TextStyle(color: Constantes.Colorjaune),),
         centerTitle: true,
+        iconTheme: IconThemeData(color: Constantes.Colorwhite),
         backgroundColor: Constantes.ColorvertFonce,
       ),
       body: _body()

@@ -1,6 +1,5 @@
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bbopt_mobile/controllers/MeteoController.dart';
 import 'package:bbopt_mobile/controllers/TacheController.dart';
@@ -10,7 +9,6 @@ import 'package:bbopt_mobile/utils/Routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -120,6 +118,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> with TickerProviderSt
           ],
         ),
         centerTitle: true,
+        iconTheme: IconThemeData(color: Constantes.Colorwhite),
         backgroundColor: Constantes.ColorvertFonce,
         actions: [
           Padding(
@@ -146,7 +145,6 @@ class _AccueilPagePageState extends State<AccueilPagePage> with TickerProviderSt
     var champCtrl = context.watch<ChampController>();
     var tacheCtrl = context.watch<TacheController>();
     var meteo = context.watch<MeteoController>();
-    var location = context.watch<LocationService>();
     return SingleChildScrollView(
       child: Column(
         children:  [
@@ -494,7 +492,7 @@ class _AccueilPagePageState extends State<AccueilPagePage> with TickerProviderSt
                         fontWeight: FontWeight.w500,
                         overflow: TextOverflow.ellipsis),
                   ),
-                  SizedBox(height: 10.sp,),
+                  SizedBox(height: 5.sp,),
                   Text(
                       value,
                       style: TextStyle(
